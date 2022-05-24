@@ -1,0 +1,1 @@
+cargo run --release -- --width 600 --height 400 --output image.png --scene ~/Development/rustracer/scenes/scene_3.txt

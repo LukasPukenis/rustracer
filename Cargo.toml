@@ -1,0 +1,21 @@
+[package]
+name = "logicpuzzle"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono="*"
+png="*"
+rand="*"
+serde="*"
+serde_json="*"
+clap = { version = "3.1.0", features = ["derive"] }
+clipboard = "0.5"
+glium = { version = "0.31", default-features = true }
+image = "0.23"
+imgui = { path = "imgui", features = ["tables-api"] }
+imgui-glium-renderer = { path = "imgui-glium-renderer" }
+imgui-winit-support = { path = "imgui-winit-support" }
+
