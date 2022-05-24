@@ -214,7 +214,7 @@ pub fn draw(scene: Arc<Mutex<Scene>>, camera: &Camera, _thread_cnt: usize, progr
                                         loader::Kind::Light => {
                                             let n = shadow_coll.0.point.clone().unit();
                                             let m = collision_normal.clone().unit();
-                                            let dot = -1.0 * m.dot(&n); // todo: still no idea why we need to multiply by negative 1
+                                            let dot = m.dot(&n);
                                             light_intensity += dot;
                                             if light_intensity > 1.0 {
                                                 light_intensity = 1.0;
