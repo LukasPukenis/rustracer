@@ -39,7 +39,7 @@ use std::sync::Mutex;
 
 enum State {
     Idle,
-    Rendering(f32)
+    Rendering(f32),
 }
 
 pub struct RenderMessage {
@@ -54,41 +54,35 @@ pub struct GUIApp {
     scene: Arc<Mutex<Scene>>,
     renderer: Renderer,
     camera: camera::Camera,
-    pixel_channel: (
-        Sender<RenderMessage>,
-        Receiver<RenderMessage>,
-    ),
+    pixel_channel: (Sender<RenderMessage>, Receiver<RenderMessage>),
     progress_channel: (Sender<f32>, Receiver<f32>),
 }
 
 #[derive(Copy, Clone)]
 pub struct Settings {
-    pub samples: u8
+    pub samples: u8,
 }
 
 impl Default for Settings {
     fn default() -> Settings {
-        Settings {
-            samples: 1,
-        }
+        Settings { samples: 1 }
     }
 }
 
 impl GUIApp {
     pub fn new(scene: Arc<Mutex<Scene>>) -> GUIApp {
-        let (tx, rx): (
-            Sender<RenderMessage>,
-            Receiver<RenderMessage>,
-        ) = mpsc::channel();
+        let (tx, rx): (Sender<RenderMessage>, Receiver<RenderMessage>) = mpsc::channel();
 
         let (progtx, progrx) = mpsc::channel();
 
         GUIApp {
             scene: scene,
             state: State::Idle,
-            camera: camera::Camera::new(vec3::Vec3::new_with(0.0, 0.0, 0.0),
-                                        vec3::Vec3::new_with(0.0, 0.0, 1.0),
-                                        46.8),
+            camera: camera::Camera::new(
+                vec3::Vec3::new_with(0.0, 0.0, 0.0),
+                vec3::Vec3::new_with(0.0, 0.0, 1.0),
+                46.8,
+            ),
             texture_id: None,
             renderer: Renderer::new(400, 400), // todo: dims
             pixel_channel: (tx, rx),
@@ -138,14 +132,17 @@ impl GUIApp {
                                 let pixels = scene::draw(rf, &cam, 1, px2, settings);
                                 let elapsed = start.elapsed().unwrap();
 
-                                tx2.send(RenderMessage { pixel_data: (Arc::new(Mutex::new(pixels))), time: (elapsed) })
+                                tx2.send(RenderMessage {
+                                    pixel_data: (Arc::new(Mutex::new(pixels))),
+                                    time: (elapsed),
+                                })
                             });
 
                             // self.render_handle = Some(h);
                             // h.join();
                             // render_handle.join().unwrap();
                         }
-                    },
+                    }
                     State::Rendering(progress) => {
                         // todo: suboptimal, we spam the channel with data
                         loop {
@@ -193,7 +190,7 @@ impl GUIApp {
                                 match self.texture_id {
                                     Some(t) => {
                                         texs.replace(t, texture);
-                                    },
+                                    }
                                     None => {
                                         self.texture_id = Some(texs.insert(texture));
                                     }
@@ -205,68 +202,86 @@ impl GUIApp {
                                 return;
                             }
                         }
-                    },
+                    }
                 }
             });
 
-    ui.window("Tree").size([400.0, 600.0], Condition::FirstUseEver)
-        .resizable(false)
-        .position([510.0, 0.0], Condition::Always)
-        .movable(false)
-        .build(|| {
-            ui.text("Misc");
-            ui.slider_config("AA Samples", AA_SAMPLES_MIN, AA_SAMPLES_MAX).build(&mut self.settings.samples);
+        ui.window("Tree")
+            .size([400.0, 600.0], Condition::FirstUseEver)
+            .resizable(false)
+            .position([510.0, 0.0], Condition::Always)
+            .movable(false)
+            .build(|| {
+                ui.text("Misc");
+                ui.slider_config("AA Samples", AA_SAMPLES_MIN, AA_SAMPLES_MAX)
+                    .build(&mut self.settings.samples);
 
-            ui.text("Camera");
-            ui.slider_config("x", -8.0, 8.0).display_format("%.01f").build(&mut self.camera.pos.x);
-            ui.slider_config("y", -8.0, 8.0).display_format("%.01f").build(&mut self.camera.pos.y);
-            ui.slider_config("z", -8.0, 8.0).display_format("%.01f").build(&mut self.camera.pos.z);
-            ui.slider_config("fov", 1.0, 200.0).build(&mut self.camera.fov);
-            ui.separator();
+                ui.text("Camera");
+                ui.slider_config("x", -8.0, 8.0)
+                    .display_format("%.01f")
+                    .build(&mut self.camera.pos.x);
+                ui.slider_config("y", -8.0, 8.0)
+                    .display_format("%.01f")
+                    .build(&mut self.camera.pos.y);
+                ui.slider_config("z", -8.0, 8.0)
+                    .display_format("%.01f")
+                    .build(&mut self.camera.pos.z);
+                ui.slider_config("fov", 1.0, 200.0)
+                    .build(&mut self.camera.fov);
+                ui.separator();
 
-            {
-                ui.text("Objects");
-                println!("----------");
-                let mut obj_id = 0;
-                if let Some(_t) = ui.tree_node("Objects") {
-                    for obj in self.scene.lock().unwrap().objects() {
-                        ui.text(format!("obj({})", obj_id));
-                        obj_id +=1 ;
-                        let stack = ui.push_id(format!("obj({})", obj_id));
-                        let mut g = obj.geometry.lock().unwrap();
-                        let pos = g.pos_mut();
+                {
+                    ui.text("Objects");
+                    let mut obj_id = 0;
+                    if let Some(_t) = ui.tree_node("Objects") {
+                        for obj in self.scene.lock().unwrap().objects() {
+                            ui.text(format!("obj({})", obj_id));
+                            obj_id += 1;
+                            let stack = ui.push_id(format!("obj({})", obj_id));
+                            let mut g = obj.geometry.lock().unwrap();
+                            let pos = g.pos_mut();
 
-                        // todo: slides all sliders for all objects
-                        ui.slider_config("x", MIN_POS, MAX_POS).display_format("%.01f").build(&mut pos.x);
-                        ui.slider_config("y", MIN_POS, MAX_POS).display_format("%.01f").build(&mut pos.y);
-                        ui.slider_config("z", MIN_POS, MAX_POS).display_format("%.01f").build(&mut pos.z);
-                        stack.pop();
+                            // todo: slides all sliders for all objects
+                            ui.slider_config("x", MIN_POS, MAX_POS)
+                                .display_format("%.01f")
+                                .build(&mut pos.x);
+                            ui.slider_config("y", MIN_POS, MAX_POS)
+                                .display_format("%.01f")
+                                .build(&mut pos.y);
+                            ui.slider_config("z", MIN_POS, MAX_POS)
+                                .display_format("%.01f")
+                                .build(&mut pos.z);
+                            stack.pop();
+                        }
                     }
                 }
-                println!("----------");
-            }
 
-            {
-                ui.text("Lights");
-                let mut obj_id = 0;
-                if let Some(_t) = ui.tree_node("Lights") {
-                    for obj in self.scene.lock().unwrap().lights() {
-                        ui.text(format!("light({})", obj_id));
-                        let stack = ui.push_id(format!("light({})", obj_id));
-                        obj_id +=1 ;
-                        let mut g = obj.geometry.lock().unwrap();
-                        let pos = g.pos_mut();
+                {
+                    ui.text("Lights");
+                    let mut obj_id = 0;
+                    if let Some(_t) = ui.tree_node("Lights") {
+                        for obj in self.scene.lock().unwrap().lights() {
+                            ui.text(format!("light({})", obj_id));
+                            let stack = ui.push_id(format!("light({})", obj_id));
+                            obj_id += 1;
+                            let mut g = obj.geometry.lock().unwrap();
+                            let pos = g.pos_mut();
 
-                        // todo: slides all sliders for all lights
-                        ui.slider_config("x", MIN_POS, MAX_POS).display_format("%.01f").build(&mut pos.x);
-                        ui.slider_config("y", MIN_POS, MAX_POS).display_format("%.01f").build(&mut pos.y);
-                        ui.slider_config("z", MIN_POS, MAX_POS).display_format("%.01f").build(&mut pos.z);
-                        stack.pop();
+                            // todo: slides all sliders for all lights
+                            ui.slider_config("x", MIN_POS, MAX_POS)
+                                .display_format("%.01f")
+                                .build(&mut pos.x);
+                            ui.slider_config("y", MIN_POS, MAX_POS)
+                                .display_format("%.01f")
+                                .build(&mut pos.y);
+                            ui.slider_config("z", MIN_POS, MAX_POS)
+                                .display_format("%.01f")
+                                .build(&mut pos.z);
+                            stack.pop();
+                        }
                     }
                 }
-            }
-        });
-
+            });
     }
 
     fn show_save_button(&self, ui: &Ui, path: Option<&str>) {
@@ -278,7 +293,15 @@ impl GUIApp {
                 None => {
                     let now = Utc::now();
                     let hour = now.hour();
-                    save_path = format!("render_{}-{}-{}_{}-{}-{}.png", now.year(), now.month(), now.day(), hour, now.minute(), now.second());
+                    save_path = format!(
+                        "render_{}-{}-{}_{}-{}-{}.png",
+                        now.year(),
+                        now.month(),
+                        now.day(),
+                        hour,
+                        now.minute(),
+                        now.second()
+                    );
                 }
             }
 

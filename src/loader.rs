@@ -4,8 +4,8 @@ use crate::sphere::Sphere;
 use crate::vec3::Vec3;
 use serde_json::Value;
 use std::fs;
-use std::sync::Mutex;
 use std::sync::Arc;
+use std::sync::Mutex;
 
 #[derive(PartialEq, Clone)]
 pub enum Kind {

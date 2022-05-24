@@ -1,15 +1,15 @@
 use crate::camera::Camera;
+use crate::gui::Settings;
 use crate::material::Material;
 use crate::ray::Ray;
-use crate::gui::Settings;
 
 use crate::vec3::Vec3;
 use rand::prelude::*;
 
 use crate::loader;
 
-use std::sync::Arc;
 use std::sync::mpsc;
+use std::sync::Arc;
 use std::sync::Mutex;
 
 pub trait RenderCallbacks {
@@ -109,12 +109,18 @@ fn random_point_in_circle() -> Vec3 {
     }
 }
 
-pub fn draw(scene: Arc<Mutex<Scene>>, camera: &Camera, _thread_cnt: usize, progress_channel: mpsc::Sender<f32>, settings: Settings) -> Vec<Pixel> {
+pub fn draw(
+    scene: Arc<Mutex<Scene>>,
+    camera: &Camera,
+    _thread_cnt: usize,
+    progress_channel: mpsc::Sender<f32>,
+    settings: Settings,
+) -> Vec<Pixel> {
     // todo, lets use locking at the top to avoid repetition
     // let scene = scn.lock().unwrap();
     let aspect = 1.0;
     let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8
-    let h = (theta/2.0).tan();
+    let h = (theta / 2.0).tan();
     let viewport_height = 2.0 * h; // todo: parameterize
     let viewport_width = aspect * viewport_height as f64;
 
@@ -173,7 +179,7 @@ pub fn draw(scene: Arc<Mutex<Scene>>, camera: &Camera, _thread_cnt: usize, progr
      * like metal reflects almost perfectly instead of randomly)
      */
 
-     // todo: Vec3->Color
+    // todo: Vec3->Color
     fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
         // todo: this is needed?
         // if depth <= 0 {
@@ -185,9 +191,7 @@ pub fn draw(scene: Arc<Mutex<Scene>>, camera: &Camera, _thread_cnt: usize, progr
                 let mat = collision_data.1.mat;
 
                 match collision_data.1.kind {
-                    loader::Kind::Light => {
-                        Vec3::new_with(mat.color.r, mat.color.g, mat.color.b)
-                    },
+                    loader::Kind::Light => Vec3::new_with(mat.color.r, mat.color.g, mat.color.b),
                     loader::Kind::Object => {
                         let collision_point = collision_data.0.point;
                         let collision_normal = collision_data.0.normal;
@@ -208,7 +212,7 @@ pub fn draw(scene: Arc<Mutex<Scene>>, camera: &Camera, _thread_cnt: usize, progr
                             match collide(&shadow_ray, &scn) {
                                 None => {
                                     panic!("should happen")
-                                },
+                                }
                                 Some(shadow_coll) => {
                                     match shadow_coll.1.kind {
                                         loader::Kind::Light => {
@@ -219,21 +223,21 @@ pub fn draw(scene: Arc<Mutex<Scene>>, camera: &Camera, _thread_cnt: usize, progr
                                             if light_intensity > 1.0 {
                                                 light_intensity = 1.0;
                                             }
-                                        },
+                                        }
                                         loader::Kind::Object => {
                                             // todo: i have no idea why this never happens
                                             // panic!("shoudl happen");
-                                        },
+                                        }
                                     }
                                 }
                             }
                         }
 
                         color * light_intensity
-                    },
+                    }
                 }
-            },
-            None => Vec3::new_with(0.3, 0.3, 0.3) // todo: hardcoded
+            }
+            None => Vec3::new_with(0.3, 0.3, 0.3), // todo: hardcoded
         }
     }
 

@@ -14,7 +14,6 @@ mod vec3;
 use std::sync::Arc;
 use std::sync::Mutex;
 
-
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
