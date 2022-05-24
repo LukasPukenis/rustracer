@@ -182,9 +182,9 @@ pub fn draw(
     // todo: Vec3->Color
     fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
         // todo: this is needed?
-        // if depth <= 0 {
-        //     return Vec3::new_with_all(0.0);
-        // }
+        if depth <= 0 {
+            return Vec3::new_with_all(0.0);
+        }
 
         match collide(r, &scn) {
             Some(collision_data) => {
@@ -233,7 +233,10 @@ pub fn draw(
                             }
                         }
 
-                        color * light_intensity
+                        let scatter_ray = Ray::new(collision_data.0.point, collision_data.0.normal);
+                        // let scatter_ray =
+                        //     Ray::new(collision_data.0.point, random_point_in_circle());
+                        color * light_intensity + ray_color(&scatter_ray, &scn, depth - 1)
                     }
                 }
             }
