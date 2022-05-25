@@ -4,7 +4,7 @@ const MIN_POS: f64 = -8.0;
 const MAX_POS: f64 = 8.0;
 
 use crate::renderer::*;
-use crate::scene::Scene;
+use crate::scene::{Pixel, Scene};
 use std::borrow::Cow;
 
 use std::time::SystemTime;
@@ -42,9 +42,41 @@ enum State {
     Rendering(f32),
 }
 
-pub struct RenderMessage {
+// pub struct RenderMessage {
+//     pixel_data: Arc<Mutex<Vec<scene::Pixel>>>,
+//     time: std::time::Duration,
+// }
+
+#[derive(PartialEq, Debug, Copy, Clone)]
+pub struct BBox {
+    pub x: i32,
+    pub y: i32,
+    pub w: i32,
+    pub h: i32,
+}
+
+impl BBox {
+    pub fn new(x: i32, y: i32, w: i32, h: i32) -> BBox {
+        BBox { x, y, w, h }
+    }
+}
+
+pub struct PartialRenderMessage {
     pixel_data: Arc<Mutex<Vec<scene::Pixel>>>,
-    time: std::time::Duration,
+    bbox: BBox,
+    progress: f32,
+}
+
+impl PartialRenderMessage {
+    pub fn new(pixel_data: Arc<Mutex<Vec<scene::Pixel>>>, bbox: BBox) -> PartialRenderMessage {
+        assert_eq!(pixel_data.lock().unwrap().len(), (bbox.w * bbox.h) as usize);
+
+        PartialRenderMessage {
+            pixel_data: pixel_data,
+            bbox: bbox,
+            progress: 0.0,
+        }
+    }
 }
 
 pub struct GUIApp {
@@ -54,8 +86,10 @@ pub struct GUIApp {
     scene: Arc<Mutex<Scene>>,
     renderer: Renderer,
     camera: camera::Camera,
-    pixel_channel: (Sender<RenderMessage>, Receiver<RenderMessage>),
+    // pixel_channel: (Sender<RenderMessage>, Receiver<RenderMessage>),
+    pixel_channel: (Sender<PartialRenderMessage>, Receiver<PartialRenderMessage>),
     progress_channel: (Sender<f32>, Receiver<f32>),
+    pixels: Vec<PartialRenderMessage>,
 }
 
 #[derive(Copy, Clone)]
@@ -71,7 +105,8 @@ impl Default for Settings {
 
 impl GUIApp {
     pub fn new(scene: Arc<Mutex<Scene>>) -> GUIApp {
-        let (tx, rx): (Sender<RenderMessage>, Receiver<RenderMessage>) = mpsc::channel();
+        let (tx, rx): (Sender<PartialRenderMessage>, Receiver<PartialRenderMessage>) =
+            mpsc::channel();
 
         let (progtx, progrx) = mpsc::channel();
 
@@ -83,6 +118,7 @@ impl GUIApp {
                 vec3::Vec3::new_with(0.0, 0.0, 1.0),
                 46.8,
             ),
+            pixels: Vec::new(),
             texture_id: None,
             renderer: Renderer::new(400, 400), // todo: dims
             pixel_channel: (tx, rx),
@@ -115,6 +151,7 @@ impl GUIApp {
                         if ui.button("Render") {
                             self.state = State::Rendering(0.0);
                             self.renderer.clear();
+                            self.pixels.clear();
 
                             let tx2 = self.pixel_channel.0.clone();
                             println!("Spawning a thread...");
@@ -126,16 +163,17 @@ impl GUIApp {
                             let settings = self.settings;
 
                             let cam = self.camera;
+                            let chan = self.pixel_channel.0.clone();
+
                             let _h = thread::spawn(move || {
-                                println!("Inside of a thread");
                                 let start = SystemTime::now();
-                                let pixels = scene::draw(rf, &cam, 1, px2, settings);
+                                let pixels = scene::draw(rf, cam, 1, px2, settings, chan);
                                 let elapsed = start.elapsed().unwrap();
 
-                                tx2.send(RenderMessage {
-                                    pixel_data: (Arc::new(Mutex::new(pixels))),
-                                    time: (elapsed),
-                                })
+                                // tx2.send(RenderMessage {
+                                //     pixel_data: (Arc::new(Mutex::new(pixels))),
+                                //     time: (elapsed),
+                                // })
                             });
 
                             // self.render_handle = Some(h);
@@ -160,10 +198,15 @@ impl GUIApp {
                             Ok(data) => {
                                 let pixels = data.pixel_data.lock().unwrap();
 
-                                // todo: why dereferenced it works, but referneced doesn't
                                 for pixel in &*pixels {
                                     let (x, y, color) = (pixel.x, pixel.y, pixel.color);
-                                    self.renderer.putpixel(x as u32, y as u32, color);
+                                    // todo: bbox
+                                    self.renderer.putpixel(
+                                        (x) as u32,
+                                        (y) as u32,
+                                        // todo: maybe bbox doesnt need w and h?
+                                        color,
+                                    );
                                 }
 
                                 let (width, height, pixels) = self.renderer.data();
@@ -196,10 +239,11 @@ impl GUIApp {
                                     }
                                 }
 
-                                self.state = State::Idle;
+                                // todo
+                                // self.state = State::Idle;
                             }
-                            Err(_e) => {
-                                return;
+                            Err(e) => {
+                                println!("errrr {:?}", e);
                             }
                         }
                     }

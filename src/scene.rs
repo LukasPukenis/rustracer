@@ -1,15 +1,19 @@
 use crate::camera::Camera;
+use crate::gui::BBox;
+use crate::gui::PartialRenderMessage;
 use crate::gui::Settings;
+use crate::material::Color;
 use crate::material::Material;
 use crate::ray::Ray;
 
+use crate::loader;
 use crate::vec3::Vec3;
 use rand::prelude::*;
-
-use crate::loader;
+use threadpool::ThreadPool;
 
 use std::sync::mpsc;
 use std::sync::Arc;
+use std::sync::Barrier;
 use std::sync::Mutex;
 
 pub trait RenderCallbacks {
@@ -109,15 +113,18 @@ fn random_point_in_circle() -> Vec3 {
     }
 }
 
-pub fn draw(
+fn renderBlock(
     scene: Arc<Mutex<Scene>>,
-    camera: &Camera,
-    _thread_cnt: usize,
-    progress_channel: mpsc::Sender<f32>,
+    camera: Camera,
     settings: Settings,
+    bbox: BBox,
 ) -> Vec<Pixel> {
-    // todo, lets use locking at the top to avoid repetition
-    // let scene = scn.lock().unwrap();
+    let mut pixels = Vec::new();
+
+    let scnheight = scene.lock().unwrap().height;
+    let scnwidth = scene.lock().unwrap().width;
+    let threads = 8; // 2^3 make configurable for the number of threads
+
     let aspect = 1.0;
     let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8
     let h = (theta / 2.0).tan();
@@ -129,136 +136,10 @@ pub fn draw(
     let origin = camera.pos;
     let lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - camera.dir;
 
-    fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
-        let mut closest_obj: Option<Object> = None;
-        let mut closest_data: Option<CollisionData> = None;
-        let mut closest_distance: f64 = 99999999999.9;
-
-        for obj in scn.objects.iter() {
-            match obj.geometry.lock().unwrap().hit(r) {
-                None => continue,
-                Some(data) => {
-                    let distance = (r.origin - data.point).length();
-                    if distance < closest_distance {
-                        closest_obj = Some(obj.clone());
-                        closest_data = Some(data);
-                        closest_distance = distance;
-                    }
-                }
-            }
-        }
-
-        for light in scn.lights.iter() {
-            match light.geometry.lock().unwrap().hit(r) {
-                None => continue,
-                Some(data) => {
-                    let distance = (r.origin - data.point).length();
-                    if distance < closest_distance {
-                        // println!("distance2 check from {} to {}", closest_distance, distance);
-                        closest_obj = Some(light.clone());
-                        closest_data = Some(data);
-                        closest_distance = distance;
-                    }
-                }
-            }
-        }
-
-        match closest_obj {
-            Some(obj) => {
-                // println!("{}", closest_distance);
-                Some((closest_data.unwrap(), obj))
-            }
-            None => None,
-        }
-    }
-
-    /**
-     * We hit the scene with a ray, if it hit something then we take the objects material into
-     * account how to render it but also do a shadow ray towards all sources of light to see if we should
-     * light the pixel. We also launch scatter rays(todo: should be abstracted, as different materials have it varying,
-     * like metal reflects almost perfectly instead of randomly)
-     */
-
-    // todo: Vec3->Color
-    fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
-        // todo: this is needed?
-        if depth <= 0 {
-            return Vec3::new_with_all(0.0);
-        }
-
-        match collide(r, &scn) {
-            Some(collision_data) => {
-                let mat = collision_data.1.mat;
-
-                match collision_data.1.kind {
-                    loader::Kind::Light => Vec3::new_with(mat.color.r, mat.color.g, mat.color.b),
-                    loader::Kind::Object => {
-                        let collision_point = collision_data.0.point;
-                        let collision_normal = collision_data.0.normal;
-
-                        let color = Vec3::new_with(mat.color.r, mat.color.g, mat.color.b);
-                        let mut light_intensity = 0.0;
-
-                        // nowe as we've hit the object in the scene, we need to determine
-                        // it's relation to the light sources, it might be in the shadow or might be
-                        // lit. In order to find that out we collide another ray from collision point towards
-                        // all the light sources in the scene and light the pixel accordingly
-                        // we do not care about light's color at the moment
-
-                        for light in scn.lights() {
-                            let shadow_dir = light.geometry.lock().unwrap().pos() - collision_point;
-                            let shadow_ray = Ray::new(collision_point, shadow_dir);
-
-                            match collide(&shadow_ray, &scn) {
-                                None => {
-                                    panic!("should happen")
-                                }
-                                Some(shadow_coll) => {
-                                    match shadow_coll.1.kind {
-                                        loader::Kind::Light => {
-                                            let n = shadow_coll.0.point.clone().unit();
-                                            let m = collision_normal.clone().unit();
-                                            let dot = m.dot(&n);
-                                            light_intensity += dot;
-                                            if light_intensity > 1.0 {
-                                                light_intensity = 1.0;
-                                            }
-                                        }
-                                        loader::Kind::Object => {
-                                            // todo: i have no idea why this never happens
-                                            // panic!("shoudl happen");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        let scatter_ray = Ray::new(collision_data.0.point, collision_data.0.normal);
-                        // let scatter_ray =
-                        //     Ray::new(collision_data.0.point, random_point_in_circle());
-                        color * light_intensity + ray_color(&scatter_ray, &scn, depth - 1)
-                    }
-                }
-            }
-            None => Vec3::new_with(0.3, 0.3, 0.3), // todo: hardcoded
-        }
-    }
-
-    let scnheight = scene.lock().unwrap().height;
-    let scnwidth = scene.lock().unwrap().width;
-
-    let mut pixels = Vec::new();
-
-    let progress_full = scnheight * scnwidth;
-
-    for j in 0..scnheight - 1 {
-        for i in 0..scnwidth - 1 {
+    for j in bbox.x..(bbox.x + bbox.w) {
+        for i in bbox.y..(bbox.y + bbox.h) {
             let mut final_color = Vec3::new();
-
             let mut rng = rand::thread_rng();
-
-            let progress = (j as f32 * scnwidth as f32 + i as f32) / progress_full as f32;
-            progress_channel.send(progress).unwrap();
 
             // todo: should be easy to parallelize by taking the screen in blocks for each thread
             for _ in 0..settings.samples {
@@ -283,12 +164,318 @@ pub fn draw(
             final_color.z = final_color.z.clamp(0.0, 1.0);
 
             pixels.push(Pixel {
-                x: i,
-                y: j,
+                x: i as u64,
+                y: j as u64,
                 color: final_color,
             })
         }
     }
 
     pixels
+}
+
+// fn fillPixelsFromBBox(srcpixels: Vec<Pixel>, dstpixels: Vec<Pixel>, bbox: BBox) {
+
+// }
+
+// todo: static is bad?
+pub fn draw(
+    scene: Arc<Mutex<Scene>>,
+    camera: Camera,
+    _thread_cnt: usize,
+    progress_channel: mpsc::Sender<f32>,
+    settings: Settings,
+    tx: mpsc::Sender<PartialRenderMessage>,
+) -> Vec<Pixel> {
+    // todo, lets use locking at the top to avoid repetition
+    // let scene = scn.lock().unwrap();
+    let aspect = 1.0;
+    let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8
+    let h = (theta / 2.0).tan();
+    let viewport_height = 2.0 * h; // todo: parameterize
+    let viewport_width = aspect * viewport_height as f64;
+
+    let horizontal = Vec3::new_with(viewport_width as f64, 0.0, 0.0);
+    let vertical = Vec3::new_with(0.0, viewport_height as f64, 0.0);
+    let origin = camera.pos;
+    let lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - camera.dir;
+
+    let scnheight = scene.lock().unwrap().height;
+    let scnwidth = scene.lock().unwrap().width;
+    let threads = 8; // 2^3 make configurable for the number of threads
+
+    let mut final_frame = Vec::new();
+
+    let progress_full = scnheight * scnwidth;
+
+    let mut bboxes = getBBoxesFor(scnwidth as i32, scnheight as i32, 16);
+    bboxes.reverse();
+
+    let pool = threadpool::ThreadPool::new(threads as usize);
+    // let mut handles: Vec<std::thread::JoinHandle<_>> = Vec::new();
+
+    for bbox in bboxes {
+        let scene_clone = scene.clone();
+        let tx_clone = tx.clone();
+        // let h = std::thread::spawn(move || {
+        //     let pixels = renderBlock(scene_clone, camera, settings, bbox);
+        //     tx_clone.send(PartialRenderMessage::new(
+        //         Arc::new(Mutex::new(pixels)),
+        //         bbox,
+        //     ))
+        // });
+
+        pool.execute(move || {
+            let pixels = renderBlock(scene_clone, camera, settings, bbox);
+            tx_clone
+                .send(PartialRenderMessage::new(
+                    Arc::new(Mutex::new(pixels)),
+                    bbox,
+                ))
+                .unwrap();
+        });
+
+        // handles.push(h);
+    }
+
+    pool.join();
+
+    // let l = handles.len();
+    // for h in handles {
+    //     // todo: progress
+    //     h.join().unwrap();
+    // }
+
+    final_frame
+}
+
+fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
+    let mut closest_obj: Option<Object> = None;
+    let mut closest_data: Option<CollisionData> = None;
+    let mut closest_distance: f64 = 99999999999.9;
+
+    for obj in scn.objects.iter() {
+        match obj.geometry.lock().unwrap().hit(r) {
+            None => continue,
+            Some(data) => {
+                let distance = (r.origin - data.point).length();
+                if distance < closest_distance {
+                    closest_obj = Some(obj.clone());
+                    closest_data = Some(data);
+                    closest_distance = distance;
+                }
+            }
+        }
+    }
+
+    for light in scn.lights.iter() {
+        match light.geometry.lock().unwrap().hit(r) {
+            None => continue,
+            Some(data) => {
+                let distance = (r.origin - data.point).length();
+                if distance < closest_distance {
+                    // println!("distance2 check from {} to {}", closest_distance, distance);
+                    closest_obj = Some(light.clone());
+                    closest_data = Some(data);
+                    closest_distance = distance;
+                }
+            }
+        }
+    }
+
+    match closest_obj {
+        Some(obj) => {
+            // println!("{}", closest_distance);
+            Some((closest_data.unwrap(), obj))
+        }
+        None => None,
+    }
+}
+
+/**
+ * We hit the scene with a ray, if it hit something then we take the objects material into
+ * account how to render it but also do a shadow ray towards all sources of light to see if we should
+ * light the pixel. We also launch scatter rays(todo: should be abstracted, as different materials have it varying,
+ * like metal reflects almost perfectly instead of randomly)
+ */
+
+// todo: Vec3->Color
+fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
+    // todo: this is needed?
+    if depth <= 0 {
+        return Vec3::new_with_all(0.0);
+    }
+
+    match collide(r, &scn) {
+        Some(collision_data) => {
+            let mat = collision_data.1.mat;
+
+            match collision_data.1.kind {
+                loader::Kind::Light => Vec3::new_with(mat.color.r, mat.color.g, mat.color.b),
+                loader::Kind::Object => {
+                    let collision_point = collision_data.0.point;
+                    let collision_normal = collision_data.0.normal;
+
+                    let color = Vec3::new_with(mat.color.r, mat.color.g, mat.color.b);
+                    let mut light_intensity = 0.0;
+
+                    // nowe as we've hit the object in the scene, we need to determine
+                    // it's relation to the light sources, it might be in the shadow or might be
+                    // lit. In order to find that out we collide another ray from collision point towards
+                    // all the light sources in the scene and light the pixel accordingly
+                    // we do not care about light's color at the moment
+
+                    for light in scn.lights() {
+                        let shadow_dir = light.geometry.lock().unwrap().pos() - collision_point;
+                        let shadow_ray = Ray::new(collision_point, shadow_dir);
+
+                        match collide(&shadow_ray, &scn) {
+                            None => {
+                                panic!("should happen")
+                            }
+                            Some(shadow_coll) => {
+                                match shadow_coll.1.kind {
+                                    loader::Kind::Light => {
+                                        let n = shadow_coll.0.point.clone().unit();
+                                        let m = collision_normal.clone().unit();
+                                        let dot = m.dot(&n);
+                                        light_intensity += dot;
+                                        if light_intensity > 1.0 {
+                                            light_intensity = 1.0;
+                                        }
+                                    }
+                                    loader::Kind::Object => {
+                                        // todo: i have no idea why this never happens
+                                        // panic!("shoudl happen");
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    let scatter_ray = Ray::new(collision_data.0.point, collision_data.0.normal);
+                    // let scatter_ray =
+                    //     Ray::new(collision_data.0.point, random_point_in_circle());
+                    color * light_intensity + ray_color(&scatter_ray, &scn, depth - 1)
+                }
+            }
+        }
+        None => Vec3::new_with(0.3, 0.3, 0.3), // todo: hardcoded
+    }
+}
+
+fn getBBoxesFor(w: i32, h: i32, subdivisions: i32) -> Vec<BBox> {
+    let block_w = w / subdivisions;
+    let block_h = h / subdivisions;
+
+    let mut bboxes: Vec<BBox> = Vec::new();
+
+    let mut x = 0;
+    let mut y = 0;
+    let mut limx = subdivisions - 1;
+    let mut limy = subdivisions - 1;
+    let mut startx = 0;
+    let mut starty = 1;
+
+    #[derive(Debug)]
+    enum Direction {
+        Right,
+        Down,
+        Left,
+        Up,
+    }
+
+    let mut dir = Direction::Right;
+
+    for _i in 0..subdivisions * subdivisions {
+        bboxes.push(BBox {
+            x: x * block_w,
+            y: y * block_h,
+            w: block_w,
+            h: block_h,
+        });
+
+        match dir {
+            Direction::Right => {
+                x += 1;
+            }
+            Direction::Down => {
+                y += 1;
+            }
+            Direction::Left => {
+                x -= 1;
+            }
+            Direction::Up => {
+                y -= 1;
+            }
+        }
+
+        match dir {
+            Direction::Right => {
+                if x == limx {
+                    dir = Direction::Down;
+                    limx -= 1;
+                }
+            }
+            Direction::Down => {
+                if y == limy {
+                    dir = Direction::Left;
+                    limy -= 1;
+                }
+            }
+            Direction::Left => {
+                if x == startx {
+                    dir = Direction::Up;
+                    startx += 1;
+                }
+            }
+            Direction::Up => {
+                if y == starty {
+                    dir = Direction::Right;
+                    starty += 1;
+                }
+            }
+        }
+    }
+
+    assert!(bboxes.len() as i32 == subdivisions * subdivisions);
+
+    bboxes
+}
+#[cfg(test)]
+mod tests {
+    use super::getBBoxesFor;
+    use super::BBox;
+
+    #[test]
+    fn test_bbox_generator4() {
+        // let b = getBBoxesFor(8, 8, 8);
+        // assert_eq!(b.len(), 64);
+
+        let bboxes = getBBoxesFor(4, 4, 4);
+        assert_eq!(bboxes.len(), 16);
+
+        let expected = vec![
+            BBox::new(0, 0, 1, 1),
+            BBox::new(1, 0, 1, 1),
+            BBox::new(2, 0, 1, 1),
+            BBox::new(3, 0, 1, 1),
+            BBox::new(3, 1, 1, 1),
+            BBox::new(3, 2, 1, 1),
+            BBox::new(3, 3, 1, 1),
+            BBox::new(2, 3, 1, 1),
+            BBox::new(1, 3, 1, 1),
+            BBox::new(0, 3, 1, 1),
+            BBox::new(0, 2, 1, 1),
+            BBox::new(0, 1, 1, 1),
+            BBox::new(1, 1, 1, 1),
+            BBox::new(2, 1, 1, 1),
+            BBox::new(2, 2, 1, 1),
+            BBox::new(1, 2, 1, 1),
+        ];
+
+        for (k, v) in bboxes.iter().enumerate() {
+            assert_eq!(bboxes[k], expected[k], "@ index {}", k);
+        }
+    }
 }
