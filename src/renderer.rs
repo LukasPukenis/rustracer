@@ -42,7 +42,9 @@ impl Renderer {
     }
 
     pub fn clear(&mut self) {
-        // self.buffer.clear(); todo
+        for i in self.buffer.iter_mut() {
+            *i = 0;
+        }
     }
 
     pub fn save(&self, path: &str) {
