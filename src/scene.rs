@@ -11,6 +11,7 @@ use crate::vec3::Vec3;
 use rand::prelude::*;
 use threadpool::ThreadPool;
 
+use std::sync::atomic::*;
 use std::sync::mpsc;
 use std::sync::Arc;
 use std::sync::Barrier;
@@ -214,6 +215,10 @@ pub fn draw(
     let pool = threadpool::ThreadPool::new(threads as usize);
     // let mut handles: Vec<std::thread::JoinHandle<_>> = Vec::new();
 
+    let progress = Arc::new(Mutex::new(0));
+
+    let bboxes_len = bboxes.len();
+
     for bbox in bboxes {
         let scene_clone = scene.clone();
         let tx_clone = tx.clone();
@@ -225,12 +230,19 @@ pub fn draw(
         //     ))
         // });
 
+        let progress_clone = progress.clone();
+
         pool.execute(move || {
             let pixels = renderBlock(scene_clone, camera, settings, bbox);
+            *progress_clone.lock().unwrap() += 1;
+
+            let p = *progress_clone.lock().unwrap() as f32 / bboxes_len as f32;
+
             tx_clone
                 .send(PartialRenderMessage::new(
                     Arc::new(Mutex::new(pixels)),
                     bbox,
+                    p,
                 ))
                 .unwrap();
         });
@@ -301,7 +313,6 @@ fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
 
 // todo: Vec3->Color
 fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
-    // todo: this is needed?
     if depth <= 0 {
         return Vec3::new_with_all(0.0);
     }

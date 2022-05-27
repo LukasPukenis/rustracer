@@ -68,13 +68,17 @@ pub struct PartialRenderMessage {
 }
 
 impl PartialRenderMessage {
-    pub fn new(pixel_data: Arc<Mutex<Vec<scene::Pixel>>>, bbox: BBox) -> PartialRenderMessage {
+    pub fn new(
+        pixel_data: Arc<Mutex<Vec<scene::Pixel>>>,
+        bbox: BBox,
+        progress: f32,
+    ) -> PartialRenderMessage {
         assert_eq!(pixel_data.lock().unwrap().len(), (bbox.w * bbox.h) as usize);
 
         PartialRenderMessage {
-            pixel_data: pixel_data,
-            bbox: bbox,
-            progress: 0.0,
+            pixel_data,
+            bbox,
+            progress,
         }
     }
 }
@@ -239,8 +243,9 @@ impl GUIApp {
                                     }
                                 }
 
-                                // todo
-                                // self.state = State::Idle;
+                                if data.progress >= 1.0 {
+                                    self.state = State::Idle;
+                                }
                             }
                             Err(e) => {
                                 println!("errrr {:?}", e);
