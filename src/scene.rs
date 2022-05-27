@@ -353,14 +353,21 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
                         }
                     }
 
-                    let scatter_ray = Ray::new(collision_data.0.point, collision_data.0.normal);
-                    // let scatter_ray =
-                    //     Ray::new(collision_data.0.point, random_point_in_circle());
+                    let scatter_ray = Ray::new(
+                        collision_data.0.point,
+                        r.dir.reflect(&collision_data.0.normal),
+                    );
+
+                    // for matte
+                    // let target =
+                    //     collision_data.0.point + collision_data.0.normal + random_point_in_circle();
+
+                    // mirror/metal
                     color * light_intensity + ray_color(&scatter_ray, &scn, depth - 1)
                 }
             }
         }
-        None => Vec3::new_with(0.3, 0.3, 0.3), // todo: hardcoded
+        None => Vec3::new_with(0.1, 0.1, 0.1), // todo: hardcoded
     }
 }
 

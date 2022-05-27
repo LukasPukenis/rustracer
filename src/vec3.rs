@@ -40,6 +40,31 @@ impl Vec3 {
         }
     }
 
+    /*
+        reflect vector around the normal and return a new vector.
+        This can be explained as this using a paper and a pencil:
+        - draw incoming, normal and reflected vectors
+        - reposition the original vector to start at the center,
+        this doesn't change a thing however it reveals that the reflected vector
+        is original vector plus the vector going upwards to reflected vector. This
+        vector is actually made out of two identical vectors and we need to find those.
+        - to find that vector we can do a dot product of normal and original vector
+        then multiply by the unit normal vector and we will receive a new vector
+        that's in the same direction as normal but with magnitude of projection of
+        incoming vector on the normal one. Multiply it by two and we have our mystery vector.
+        - take the resulting vector which is 2*dot(V,N)*N and add it to the original vector
+
+
+     v #   |n  # r
+        #  |  #
+         # | #
+          #|#
+        -------
+    */
+    pub fn reflect(&self, normal: &Vec3) -> Vec3 {
+        *self - (*normal * self.dot(normal)) // todo why negative
+    }
+
     #[allow(dead_code)]
     pub fn unit(&mut self) -> Vec3 {
         // todo: self / self.length()
