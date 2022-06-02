@@ -4,7 +4,7 @@ const MIN_POS: f64 = -8.0;
 const MAX_POS: f64 = 8.0;
 
 use crate::renderer::*;
-use crate::scene::{Pixel, Scene};
+use crate::scene::{Scene};
 use std::borrow::Cow;
 
 use std::time::SystemTime;
@@ -157,7 +157,7 @@ impl GUIApp {
                             self.renderer.clear();
                             self.pixels.clear();
 
-                            let tx2 = self.pixel_channel.0.clone();
+                            let _tx2 = self.pixel_channel.0.clone();
                             println!("Spawning a thread...");
 
                             // todo: this moves in px2 into thread, just note
@@ -171,8 +171,8 @@ impl GUIApp {
 
                             let _h = thread::spawn(move || {
                                 let start = SystemTime::now();
-                                let pixels = scene::draw(rf, cam, 1, px2, settings, chan);
-                                let elapsed = start.elapsed().unwrap();
+                                let _pixels = scene::draw(rf, cam, 1, px2, settings, chan);
+                                let _elapsed = start.elapsed().unwrap();
 
                                 // tx2.send(RenderMessage {
                                 //     pixel_data: (Arc::new(Mutex::new(pixels))),
@@ -336,7 +336,7 @@ impl GUIApp {
 
     fn show_save_button(&self, ui: &Ui, path: Option<&str>) {
         if self.texture_id.is_some() {
-            let mut save_path: String;
+            let save_path: String;
 
             match path {
                 Some(p) => save_path = String::from(p),

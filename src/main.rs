@@ -45,7 +45,7 @@ fn main() {
     let mut scene = scene::Scene::new(width as u64, height as u64);
 
     let objects = loader::load(&args.scene);
-    let mut animator = animation::Animator::new();
+    let _animator = animation::Animator::new();
 
     for obj in objects {
         match obj.2 {

@@ -2,7 +2,7 @@ use crate::camera::Camera;
 use crate::gui::BBox;
 use crate::gui::PartialRenderMessage;
 use crate::gui::Settings;
-use crate::material::Color;
+
 use crate::material::Material;
 use crate::ray::Ray;
 
@@ -11,12 +11,12 @@ use crate::animation;
 use crate::loader;
 use crate::vec3::Vec3;
 use rand::prelude::*;
-use threadpool::ThreadPool;
 
-use std::sync::atomic::*;
+
+
 use std::sync::mpsc;
 use std::sync::Arc;
-use std::sync::Barrier;
+
 use std::sync::Mutex;
 
 pub trait RenderCallbacks {
@@ -131,7 +131,7 @@ fn renderBlock(
 
     let scnheight = scene.lock().unwrap().height;
     let scnwidth = scene.lock().unwrap().width;
-    let threads = 8; // 2^3 make configurable for the number of threads
+    let _threads = 8; // 2^3 make configurable for the number of threads
 
     let aspect = 1.0;
     let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8
@@ -191,7 +191,7 @@ pub fn draw(
     scene: Arc<Mutex<Scene>>,
     camera: Camera,
     _thread_cnt: usize,
-    progress_channel: mpsc::Sender<f32>,
+    _progress_channel: mpsc::Sender<f32>,
     settings: Settings,
     tx: mpsc::Sender<PartialRenderMessage>,
 ) -> Vec<Pixel> {
@@ -206,15 +206,15 @@ pub fn draw(
     let horizontal = Vec3::new_with(viewport_width as f64, 0.0, 0.0);
     let vertical = Vec3::new_with(0.0, viewport_height as f64, 0.0);
     let origin = camera.pos;
-    let lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - camera.dir;
+    let _lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - camera.dir;
 
     let scnheight = scene.lock().unwrap().height;
     let scnwidth = scene.lock().unwrap().width;
     let threads = 8; // 2^3 make configurable for the number of threads
 
-    let mut final_frame = Vec::new();
+    let final_frame = Vec::new();
 
-    let progress_full = scnheight * scnwidth;
+    let _progress_full = scnheight * scnwidth;
 
     let mut bboxes = getBBoxesFor(scnwidth as i32, scnheight as i32, 16);
     bboxes.reverse();
@@ -504,7 +504,7 @@ mod tests {
             BBox::new(1, 2, 1, 1),
         ];
 
-        for (k, v) in bboxes.iter().enumerate() {
+        for (k, _v) in bboxes.iter().enumerate() {
             assert_eq!(bboxes[k], expected[k], "@ index {}", k);
         }
     }

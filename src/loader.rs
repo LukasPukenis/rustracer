@@ -74,8 +74,8 @@ fn build_object_from_string(
         },
     }
 
-    let mut obj: Arc<Mutex<dyn Hitable>>;
-    let mut kind: Kind;
+    let obj: Arc<Mutex<dyn Hitable>>;
+    let kind: Kind;
 
     match s["type"].as_str().unwrap() {
         "sphere" => {
@@ -89,12 +89,12 @@ fn build_object_from_string(
         _ => panic!("unrecognized type"),
     }
 
-    let mut animation: Option<Animation> = None;
+    let animation: Option<Animation> = None;
     match &s["animations"] {
-        anim => {
+        _anim => {
             for a in s["animations"].as_array().unwrap() {
                 for prop in a.as_object() {
-                    let anim = Animation::new(
+                    let _anim = Animation::new(
                         obj.clone(),
                         parse_property(prop["prop"].as_str().unwrap()),
                         prop["from"].as_f64().unwrap(),

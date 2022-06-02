@@ -5,9 +5,9 @@ use crate::scene::Face;
 use crate::scene::Hitable;
 use crate::vec3::Vec3;
 
-use crate::animation;
-use crate::loader;
-use crate::scene;
+
+
+
 
 #[derive(Copy, Clone)]
 pub struct Sphere {
@@ -24,7 +24,7 @@ impl Sphere {
 const THRESHOLD: f64 = 0.001; //0.001;
 
 impl Hitable for Sphere {
-    fn set_property(&mut self, prop: AnimationProperty, val: f64) {
+    fn set_property(&mut self, _prop: AnimationProperty, _val: f64) {
         todo!()
     }
     fn pos(&self) -> Vec3 {
