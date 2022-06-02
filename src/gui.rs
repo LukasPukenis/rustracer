@@ -265,14 +265,15 @@ impl GUIApp {
                 ui.slider_config("AA Samples", AA_SAMPLES_MIN, AA_SAMPLES_MAX)
                     .build(&mut self.settings.samples);
 
+                let K = 50.0;
                 ui.text("Camera");
-                ui.slider_config("x", -8.0, 8.0)
+                ui.slider_config("x", -K, K)
                     .display_format("%.01f")
                     .build(&mut self.camera.pos.x);
-                ui.slider_config("y", -8.0, 8.0)
+                ui.slider_config("y", -K, K)
                     .display_format("%.01f")
                     .build(&mut self.camera.pos.y);
-                ui.slider_config("z", -8.0, 8.0)
+                ui.slider_config("z", -K, K)
                     .display_format("%.01f")
                     .build(&mut self.camera.pos.z);
                 ui.slider_config("fov", 1.0, 200.0)

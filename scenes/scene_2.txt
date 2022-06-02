@@ -2,11 +2,11 @@
     {
         "type": "point_light",
         "pos": {
-            "x": 0.0,
-            "y": 1.0,
+            "x": 100.0,
+            "y": 30.0,
             "z": -1.0
         },
-        "radius": 0.2,
+        "radius": 0.001,
         "material": {
             "reflective": 1.0,
             "color": {
@@ -20,16 +20,34 @@
         "type": "sphere",
         "pos": {
             "x": 0.0,
-            "y": 0.0,
-            "z": -2.0
+            "y": -100.5,
+            "z": -4.0
         },
-        "radius": 0.5,
+        "radius": 100.0,
         "material": {
             "reflective": 1.0,
             "color": {
                 "r": 0.0,
                 "g": 1.0,
                 "b": 0.0
+            }
+        }
+    }
+    ,
+    {
+        "type": "sphere",
+        "pos": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": -4.0
+        },
+        "radius": 0.5,
+        "material": {
+            "reflective": 1.0,
+            "color": {
+                "r": 0.0,
+                "g": 0.0,
+                "b": 1.0
             }
         }
     }

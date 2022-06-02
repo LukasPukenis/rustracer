@@ -53,16 +53,9 @@ impl Vec3 {
         that's in the same direction as normal but with magnitude of projection of
         incoming vector on the normal one. Multiply it by two and we have our mystery vector.
         - take the resulting vector which is 2*dot(V,N)*N and add it to the original vector
-
-
-     v #   |n  # r
-        #  |  #
-         # | #
-          #|#
-        -------
     */
     pub fn reflect(&self, normal: &Vec3) -> Vec3 {
-        *self - (*normal * self.dot(normal)) // todo why negative
+        *self + (*normal * self.dot(normal)) // todo why original formula is negative????
     }
 
     #[allow(dead_code)]

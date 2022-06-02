@@ -1,3 +1,6 @@
+use crate::animation::Animation;
+use crate::animation::AnimationProperty;
+use crate::animation::Easing;
 use crate::material::Material;
 use crate::scene::Hitable;
 use crate::sphere::Sphere;
@@ -13,7 +16,7 @@ pub enum Kind {
     Light,
 }
 
-pub fn load(path: &str) -> Vec<(Arc<Mutex<dyn Hitable>>, Material, Kind)> {
+pub fn load(path: &str) -> Vec<(Arc<Mutex<dyn Hitable>>, Material, Kind, Option<Animation>)> {
     let contents = fs::read_to_string(path).expect("file not found");
     let j: Value = serde_json::from_str(&contents).unwrap();
     let mut results = Vec::new();
@@ -31,7 +34,28 @@ fn panic_on_range(x: f64) {
         panic!("Range must be inside [0;1]")
     }
 }
-fn build_object_from_string(s: &Value) -> (Arc<Mutex<dyn Hitable>>, Material, Kind) {
+
+fn parse_ease(s: &str) -> Easing {
+    match s {
+        "linear" => Easing::LINEAR,
+        _ => todo!(),
+    }
+}
+
+fn parse_property(s: &str) -> AnimationProperty {
+    match s {
+        "x" => AnimationProperty::X,
+        "y" => AnimationProperty::Y,
+        "z" => AnimationProperty::Z,
+        "radius" => AnimationProperty::RADIUS,
+        _ => todo!(),
+    }
+}
+
+// todo: Hitable is a combination and should be used split
+fn build_object_from_string(
+    s: &Value,
+) -> (Arc<Mutex<dyn Hitable>>, Material, Kind, Option<Animation>) {
     let mut mat = Material::new();
 
     match &s["material"] {
@@ -49,11 +73,42 @@ fn build_object_from_string(s: &Value) -> (Arc<Mutex<dyn Hitable>>, Material, Ki
             }
         },
     }
+
+    let mut obj: Arc<Mutex<dyn Hitable>>;
+    let mut kind: Kind;
+
     match s["type"].as_str().unwrap() {
-        "sphere" => (Arc::new(Mutex::new(build_sphere(s))), mat, Kind::Object),
-        "point_light" => (Arc::new(Mutex::new(build_sphere(s))), mat, Kind::Light),
+        "sphere" => {
+            obj = Arc::new(Mutex::new(build_sphere(s)));
+            kind = Kind::Object;
+        }
+        "point_light" => {
+            obj = Arc::new(Mutex::new(build_sphere(s)));
+            kind = Kind::Light;
+        }
         _ => panic!("unrecognized type"),
     }
+
+    let mut animation: Option<Animation> = None;
+    match &s["animations"] {
+        anim => {
+            for a in s["animations"].as_array().unwrap() {
+                for prop in a.as_object() {
+                    let anim = Animation::new(
+                        obj.clone(),
+                        parse_property(prop["prop"].as_str().unwrap()),
+                        prop["from"].as_f64().unwrap(),
+                        prop["to"].as_f64().unwrap(),
+                        prop["time"].as_f64().unwrap(),
+                        parse_ease(prop["ease"].as_str().unwrap()),
+                    );
+                }
+            }
+        }
+        _ => {}
+    }
+
+    (obj, mat, kind, animation)
 }
 
 fn build_sphere(s: &Value) -> Sphere {

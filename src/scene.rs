@@ -6,6 +6,8 @@ use crate::material::Color;
 use crate::material::Material;
 use crate::ray::Ray;
 
+use crate::animation;
+
 use crate::loader;
 use crate::vec3::Vec3;
 use rand::prelude::*;
@@ -20,6 +22,10 @@ use std::sync::Mutex;
 pub trait RenderCallbacks {
     fn progress(&mut self, v: f32);
 }
+
+const ambient_r: f64 = 0.1;
+const ambient_g: f64 = 0.1;
+const ambient_b: f64 = 0.1;
 
 pub struct Pixel {
     pub x: u64,
@@ -94,6 +100,7 @@ pub trait Hitable: Send + Sync {
     fn hit(&self, r: &Ray) -> Option<CollisionData>;
     fn pos(&self) -> Vec3;
     fn pos_mut(&mut self) -> &mut Vec3;
+    fn set_property(&mut self, prop: animation::AnimationProperty, val: f64);
 }
 
 fn random_point_in_circle() -> Vec3 {
@@ -350,9 +357,13 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
                                         let n = shadow_coll.0.point.clone().unit();
                                         let m = collision_normal.clone().unit();
                                         let dot = m.dot(&n);
+
                                         light_intensity += dot;
                                         if light_intensity > 1.0 {
                                             light_intensity = 1.0;
+                                        }
+                                        if light_intensity < 0.0 {
+                                            light_intensity = 0.0;
                                         }
                                     }
                                     loader::Kind::Object => {
@@ -374,11 +385,12 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
                     //     collision_data.0.point + collision_data.0.normal + random_point_in_circle();
 
                     // mirror/metal
-                    color * light_intensity + ray_color(&scatter_ray, &scn, depth - 1)
+                    color * light_intensity + ray_color(&scatter_ray, &scn, depth - 1) * 0.5
+                    // todo: hardcoded material number
                 }
             }
         }
-        None => Vec3::new_with(0.1, 0.1, 0.1), // todo: hardcoded
+        None => Vec3::new_with(ambient_r, ambient_g, ambient_b), // todo: hardcoded
     }
 }
 
