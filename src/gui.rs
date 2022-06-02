@@ -4,7 +4,7 @@ const MIN_POS: f64 = -8.0;
 const MAX_POS: f64 = 8.0;
 
 use crate::renderer::*;
-use crate::scene::{Scene};
+use crate::scene::Scene;
 use std::borrow::Cow;
 
 use std::time::SystemTime;

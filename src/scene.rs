@@ -12,8 +12,6 @@ use crate::loader;
 use crate::vec3::Vec3;
 use rand::prelude::*;
 
-
-
 use std::sync::mpsc;
 use std::sync::Arc;
 

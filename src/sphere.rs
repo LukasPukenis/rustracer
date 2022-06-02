@@ -5,10 +5,6 @@ use crate::scene::Face;
 use crate::scene::Hitable;
 use crate::vec3::Vec3;
 
-
-
-
-
 #[derive(Copy, Clone)]
 pub struct Sphere {
     pub pos: Vec3,
