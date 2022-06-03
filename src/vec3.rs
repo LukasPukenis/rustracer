@@ -55,7 +55,7 @@ impl Vec3 {
         - take the resulting vector which is 2*dot(V,N)*N and add it to the original vector
     */
     pub fn reflect(&self, normal: &Vec3) -> Vec3 {
-        *self + (*normal * self.dot(normal)) // todo why original formula is negative????
+        *self - (*normal * 2.0 * self.dot(normal)) //todo: how to get this formula, I get + instead of -
     }
 
     #[allow(dead_code)]
