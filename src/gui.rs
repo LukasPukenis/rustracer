@@ -38,9 +38,11 @@ use imgui_glium_renderer::Texture;
 use std::sync::Arc;
 use std::sync::Mutex;
 
+#[derive(Copy, Clone)]
 enum State {
     Idle,
     Rendering(f32),
+    Animating,
 }
 
 // pub struct RenderMessage {
@@ -89,6 +91,7 @@ pub struct GUIApp {
     settings: Settings,
     frame: u32,
     state: State,
+    last_state: State,
     texture_id: Option<TextureId>,
     scene: Arc<Mutex<Scene>>,
     renderer: Renderer,
@@ -121,10 +124,11 @@ impl GUIApp {
             animator: animator,
             scene: scene,
             state: State::Idle,
+            last_state: State::Idle,
             camera: camera::Camera::new(
-                vec3::Vec3::new_with(0.0, 0.0, 0.0),
-                vec3::Vec3::new_with(0.0, 0.0, 1.0),
-                46.8,
+                vec3::Vec3::new_with(0.0, 0.0, 1.0), // pos
+                vec3::Vec3::new_with(0.0, 0.0, 1.0), // dir
+                60.0,
             ),
             pixels: Vec::new(),
             texture_id: None,
@@ -134,6 +138,15 @@ impl GUIApp {
             progress_channel: (progtx, progrx),
             settings: Settings::default(),
         }
+    }
+
+    fn advance_frame(&mut self) {
+        let fps = 60.0;
+        let time = (1000.0 / fps * 0.01) * self.frame as f64;
+
+        self.frame += 1;
+        self.animator.update(time);
+        self.render();
     }
 
     pub fn update(
@@ -158,9 +171,23 @@ impl GUIApp {
                 match self.state {
                     State::Idle => {
                         if ui.button("Render") {
+                            // todo: ugh
+                            self.last_state = State::Idle;
+                            self.render();
+                        } else if ui.button("Animate") {
+                            self.last_state = State::Animating;
                             self.render();
                         }
                     }
+                    State::Animating => {
+                        if self.frame > 200 {
+                            self.frame = 0;
+                            self.state = State::Idle;
+                        } else {
+                            self.advance_frame();
+                        }
+                    }
+
                     State::Rendering(progress) => {
                         // todo: suboptimal, we spam the channel with data
                         loop {
@@ -220,7 +247,7 @@ impl GUIApp {
                                 }
 
                                 if data.progress >= 1.0 {
-                                    self.state = State::Idle;
+                                    self.state = self.last_state;
                                 }
                             }
                             Err(e) => {}
@@ -239,9 +266,7 @@ impl GUIApp {
                 let fps = 60.0;
                 let time = (1000.0 / fps * 0.01) * self.frame as f64;
                 if ui.button("Frame") {
-                    self.frame += 1;
-                    self.animator.update(time);
-                    self.render();
+                    self.advance_frame();
                 }
                 ui.text(format!(
                     "fps: {} frame: {} time: {:.2}",
@@ -255,6 +280,19 @@ impl GUIApp {
 
                 let k = 50.0;
                 ui.text("Camera");
+
+                ui.text("Direction");
+                ui.slider_config("xx", -k, k)
+                    .display_format("%.01f")
+                    .build(&mut self.camera.dir.x);
+                ui.slider_config("yu", -k, k)
+                    .display_format("%.01f")
+                    .build(&mut self.camera.dir.y);
+                ui.slider_config("zz", -k, k)
+                    .display_format("%.01f")
+                    .build(&mut self.camera.dir.z);
+
+                ui.text("Position");
                 ui.slider_config("x", -k, k)
                     .display_format("%.01f")
                     .build(&mut self.camera.pos.x);
