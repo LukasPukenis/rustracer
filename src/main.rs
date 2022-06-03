@@ -36,43 +36,40 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-    // let width = args.width;
-    // let height = args.height;
+    let width = args.width;
+    let height = args.height;
 
-    // todo: pass cli properly to everywhere
-    let width = 400;
-    let height = 400;
     let mut scene = scene::Scene::new(width as u64, height as u64);
 
     let objects = loader::load(&args.scene);
-    let _animator = animation::Animator::new();
+    let mut animator = animation::Animator::new();
 
     for obj in objects {
         match obj.2 {
             loader::Kind::Object => scene.add_object(obj.0, obj.1),
             loader::Kind::Light => scene.add_light(obj.0, obj.1),
         }
+
+        match obj.3 {
+            Some(anim) => animator.add(anim),
+            None => {}
+        }
     }
 
-    // todo: hardcoded light!
-    // let light_pos = vec3::Vec3::new_with(0.0, 0.0, -1.0);
-    // let light_radius = 0.1;
-    // let light_sphere = sphere::Sphere::new(light_pos, light_radius);
-    // let mut lightmat = material::Material::new();
-    // lightmat.color.r = 255.0;
-    // lightmat.color.g = 255.0;
-    // lightmat.color.b = 255.0;
-
-    // scene.add_light(Arc::new(Mutex::new(light_sphere)), lightmat);
-
-    let mut GUI = gui::GUIApp::new(Arc::new(Mutex::new(scene)));
+    let mut GUI = Arc::new(Mutex::new(gui::GUIApp::new(
+        Arc::new(Mutex::new(scene)),
+        width,
+        height,
+        animator,
+    )));
 
     if args.nogui {
         // todo
     } else {
         let system = support::init(file!());
+        let gui_clone = GUI.clone();
         system.main_loop(move |_, ui, ctx, texs| {
-            GUI.update(ui, ctx, texs);
+            gui_clone.lock().unwrap().update(ui, ctx, texs);
         });
     }
 }

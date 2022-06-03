@@ -3,6 +3,7 @@ const AA_SAMPLES_MAX: u8 = 16;
 const MIN_POS: f64 = -8.0;
 const MAX_POS: f64 = 8.0;
 
+use crate::animation::Animator;
 use crate::renderer::*;
 use crate::scene::Scene;
 use std::borrow::Cow;
@@ -84,7 +85,9 @@ impl PartialRenderMessage {
 }
 
 pub struct GUIApp {
+    animator: Animator,
     settings: Settings,
+    frame: u32,
     state: State,
     texture_id: Option<TextureId>,
     scene: Arc<Mutex<Scene>>,
@@ -108,13 +111,14 @@ impl Default for Settings {
 }
 
 impl GUIApp {
-    pub fn new(scene: Arc<Mutex<Scene>>) -> GUIApp {
+    pub fn new(scene: Arc<Mutex<Scene>>, width: u32, height: u32, animator: Animator) -> GUIApp {
         let (tx, rx): (Sender<PartialRenderMessage>, Receiver<PartialRenderMessage>) =
             mpsc::channel();
 
         let (progtx, progrx) = mpsc::channel();
 
         GUIApp {
+            animator: animator,
             scene: scene,
             state: State::Idle,
             camera: camera::Camera::new(
@@ -124,7 +128,8 @@ impl GUIApp {
             ),
             pixels: Vec::new(),
             texture_id: None,
-            renderer: Renderer::new(400, 400), // todo: dims
+            frame: 0,
+            renderer: Renderer::new(width, height), // todo: dims
             pixel_channel: (tx, rx),
             progress_channel: (progtx, progrx),
             settings: Settings::default(),
@@ -144,7 +149,7 @@ impl GUIApp {
             .movable(false)
             .build(|| {
                 if let Some(texture_id) = self.texture_id {
-                    Image::new(texture_id, [400.0, 400.0]).build(ui);
+                    Image::new(texture_id, [300.0, 300.0]).build(ui);
                 }
 
                 // todo: pass CLI path
@@ -153,36 +158,7 @@ impl GUIApp {
                 match self.state {
                     State::Idle => {
                         if ui.button("Render") {
-                            self.state = State::Rendering(0.0);
-                            self.renderer.clear();
-                            self.pixels.clear();
-
-                            let _tx2 = self.pixel_channel.0.clone();
-                            println!("Spawning a thread...");
-
-                            // todo: this moves in px2 into thread, just note
-                            let px2 = self.progress_channel.0.clone();
-
-                            let rf = self.scene.clone();
-                            let settings = self.settings;
-
-                            let cam = self.camera;
-                            let chan = self.pixel_channel.0.clone();
-
-                            let _h = thread::spawn(move || {
-                                let start = SystemTime::now();
-                                let _pixels = scene::draw(rf, cam, 1, px2, settings, chan);
-                                let _elapsed = start.elapsed().unwrap();
-
-                                // tx2.send(RenderMessage {
-                                //     pixel_data: (Arc::new(Mutex::new(pixels))),
-                                //     time: (elapsed),
-                                // })
-                            });
-
-                            // self.render_handle = Some(h);
-                            // h.join();
-                            // render_handle.join().unwrap();
+                            self.render();
                         }
                     }
                     State::Rendering(progress) => {
@@ -247,33 +223,45 @@ impl GUIApp {
                                     self.state = State::Idle;
                                 }
                             }
-                            Err(e) => {
-                                println!("errrr {:?}", e);
-                            }
+                            Err(e) => {}
                         }
                     }
                 }
             });
 
-        ui.window("Tree")
+        ui.window("Options")
             .size([400.0, 600.0], Condition::FirstUseEver)
             .resizable(false)
             .position([510.0, 0.0], Condition::Always)
             .movable(false)
             .build(|| {
+                ui.text("Animations");
+                let fps = 60.0;
+                let time = (1000.0 / fps * 0.01) * self.frame as f64;
+                if ui.button("Frame") {
+                    self.frame += 1;
+                    self.animator.update(time);
+                    self.render();
+                }
+                ui.text(format!(
+                    "fps: {} frame: {} time: {:.2}",
+                    fps, self.frame, time
+                ));
+
+                ui.separator();
                 ui.text("Misc");
                 ui.slider_config("AA Samples", AA_SAMPLES_MIN, AA_SAMPLES_MAX)
                     .build(&mut self.settings.samples);
 
-                let K = 50.0;
+                let k = 50.0;
                 ui.text("Camera");
-                ui.slider_config("x", -K, K)
+                ui.slider_config("x", -k, k)
                     .display_format("%.01f")
                     .build(&mut self.camera.pos.x);
-                ui.slider_config("y", -K, K)
+                ui.slider_config("y", -k, k)
                     .display_format("%.01f")
                     .build(&mut self.camera.pos.y);
-                ui.slider_config("z", -K, K)
+                ui.slider_config("z", -k, k)
                     .display_format("%.01f")
                     .build(&mut self.camera.pos.z);
                 ui.slider_config("fov", 1.0, 200.0)
@@ -360,5 +348,34 @@ impl GUIApp {
                 println!("Saved at '{}'", save_path);
             }
         }
+    }
+
+    fn render(&mut self) {
+        self.state = State::Rendering(0.0);
+        self.renderer.clear();
+        self.pixels.clear();
+
+        let _tx2 = self.pixel_channel.0.clone();
+        println!("Spawning a thread...");
+
+        // todo: this moves in px2 into thread, just note
+        let px2 = self.progress_channel.0.clone();
+
+        let rf = self.scene.clone();
+        let settings = self.settings;
+
+        let cam = self.camera;
+        let chan = self.pixel_channel.0.clone();
+
+        let _h = thread::spawn(move || {
+            let start = SystemTime::now();
+            let _pixels = scene::draw(rf, cam, 1, px2, settings, chan);
+            let _elapsed = start.elapsed().unwrap();
+
+            // tx2.send(RenderMessage {
+            //     pixel_data: (Arc::new(Mutex::new(pixels))),
+            //     time: (elapsed),
+            // })
+        });
     }
 }

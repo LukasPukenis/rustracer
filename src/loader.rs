@@ -89,22 +89,25 @@ fn build_object_from_string(
         _ => panic!("unrecognized type"),
     }
 
-    let animation: Option<Animation> = None;
+    let mut animation: Option<Animation> = None;
     match &s["animations"] {
-        _anim => {
-            for a in s["animations"].as_array().unwrap() {
-                for prop in a.as_object() {
-                    let _anim = Animation::new(
-                        obj.clone(),
-                        parse_property(prop["prop"].as_str().unwrap()),
-                        prop["from"].as_f64().unwrap(),
-                        prop["to"].as_f64().unwrap(),
-                        prop["time"].as_f64().unwrap(),
-                        parse_ease(prop["ease"].as_str().unwrap()),
-                    );
+        _anim => match s["animations"].as_array() {
+            Some(data) => {
+                for a in data {
+                    for prop in a.as_object() {
+                        animation = Some(Animation::new(
+                            obj.clone(),
+                            parse_property(prop["prop"].as_str().unwrap()),
+                            prop["from"].as_f64().unwrap(),
+                            prop["to"].as_f64().unwrap(),
+                            prop["time"].as_f64().unwrap(),
+                            parse_ease(prop["ease"].as_str().unwrap()),
+                        ));
+                    }
                 }
             }
-        }
+            None => {}
+        },
         _ => {}
     }
 

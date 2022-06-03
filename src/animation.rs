@@ -43,39 +43,47 @@ impl Animation {
         }
     }
 
-    pub fn at(&self, t: f64) -> f64 {
-        assert_eq!(true, t <= 1.0);
-        assert_eq!(true, t >= 0.0);
+    // todo: better duration type
+    pub fn at(&self, time: f64) -> f64 {
+        let mut t = time / self.time;
+        if t >= 1.0 {
+            t = 1.0;
+        }
 
-        // todo
-        return t;
+        assert_eq!(true, t >= 0.0);
+        assert_eq!(true, t <= 1.0);
+
+        // todo: easings
+        if t >= self.time {
+            return self.end;
+        }
+
+        // todo: this is linear only
+        self.start + t * (self.end - self.start)
     }
 }
 pub struct Animator {
-    delta: f64,
     animations: Vec<Animation>,
 }
 
 impl Animator {
     pub fn new() -> Animator {
         Animator {
-            delta: 0.0,
             animations: Vec::new(),
         }
     }
 
-    pub fn update(&mut self, dt: f64) {
-        self.delta += dt;
+    pub fn add(&mut self, anim: Animation) {
+        self.animations.push(anim);
+    }
 
+    pub fn update(&mut self, t: f64) {
+        println!("update {} / {}", t, self.animations.len());
         for anim in self.animations.iter() {
             anim.object
                 .lock()
                 .unwrap()
-                .set_property(anim.prop, anim.at(self.delta));
+                .set_property(anim.prop, anim.at(t));
         }
-    }
-
-    pub fn reset(&mut self) {
-        self.delta = 0.0
     }
 }

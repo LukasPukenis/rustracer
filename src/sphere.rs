@@ -20,8 +20,13 @@ impl Sphere {
 const THRESHOLD: f64 = 0.001; //0.001;
 
 impl Hitable for Sphere {
-    fn set_property(&mut self, _prop: AnimationProperty, _val: f64) {
-        todo!()
+    fn set_property(&mut self, prop: AnimationProperty, val: f64) {
+        match prop {
+            AnimationProperty::X => self.pos.x = val,
+            AnimationProperty::Y => self.pos.y = val,
+            AnimationProperty::Z => self.pos.z = val,
+            AnimationProperty::RADIUS => self.radius = val,
+        }
     }
     fn pos(&self) -> Vec3 {
         self.pos

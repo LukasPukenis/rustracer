@@ -180,10 +180,6 @@ fn renderBlock(
     pixels
 }
 
-// fn fillPixelsFromBBox(srcpixels: Vec<Pixel>, dstpixels: Vec<Pixel>, bbox: BBox) {
-
-// }
-
 // todo: static is bad?
 pub fn draw(
     scene: Arc<Mutex<Scene>>,
@@ -196,7 +192,7 @@ pub fn draw(
     // todo, lets use locking at the top to avoid repetition
     // let scene = scn.lock().unwrap();
     let aspect = 1.0;
-    let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8
+    let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8 // todo: show focal length and angle in gui
     let h = (theta / 2.0).tan();
     let viewport_height = 2.0 * h; // todo: parameterize
     let viewport_width = aspect * viewport_height as f64;
@@ -214,7 +210,9 @@ pub fn draw(
 
     let _progress_full = scnheight * scnwidth;
 
-    let mut bboxes = getBBoxesFor(scnwidth as i32, scnheight as i32, 16);
+    // depending on the renderer size, increasing this produces multithreaded operation
+    let todo_bboxes_size = 1;
+    let mut bboxes = getBBoxesFor(scnwidth as i32, scnheight as i32, todo_bboxes_size);
     bboxes.reverse();
 
     let pool = threadpool::ThreadPool::new(threads as usize);
