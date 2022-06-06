@@ -1,7 +1,7 @@
 use crate::animation::Animation;
 use crate::animation::AnimationProperty;
 use crate::animation::Easing;
-use crate::material::Material;
+use crate::material;
 use crate::scene::Hitable;
 use crate::sphere::Sphere;
 use crate::vec3::Vec3;
@@ -16,7 +16,14 @@ pub enum Kind {
     Light,
 }
 
-pub fn load(path: &str) -> Vec<(Arc<Mutex<dyn Hitable>>, Material, Kind, Option<Animation>)> {
+pub fn load(
+    path: &str,
+) -> Vec<(
+    Arc<Mutex<dyn Hitable>>,
+    material::Material,
+    Kind,
+    Option<Animation>,
+)> {
     let contents = fs::read_to_string(path).expect("file not found");
     let j: Value = serde_json::from_str(&contents).unwrap();
     let mut results = Vec::new();
@@ -55,21 +62,47 @@ fn parse_property(s: &str) -> AnimationProperty {
 // todo: Hitable is a combination and should be used split
 fn build_object_from_string(
     s: &Value,
-) -> (Arc<Mutex<dyn Hitable>>, Material, Kind, Option<Animation>) {
-    let mut mat = Material::new();
+) -> (
+    Arc<Mutex<dyn Hitable>>,
+    material::Material,
+    Kind,
+    Option<Animation>,
+) {
+    let mat: material::Material;
 
     match &s["material"] {
         m => match m {
             material => {
-                mat.reflective = material["reflective"].as_f64().unwrap();
-
+                let mut color = material::Color::default();
                 let col = &material["color"];
-                mat.color.r = col["r"].as_f64().unwrap();
-                mat.color.g = col["g"].as_f64().unwrap();
-                mat.color.b = col["b"].as_f64().unwrap();
-                panic_on_range(mat.color.r);
-                panic_on_range(mat.color.g);
-                panic_on_range(mat.color.b);
+                color.r = col["r"].as_f64().unwrap();
+                color.g = col["g"].as_f64().unwrap();
+                color.b = col["b"].as_f64().unwrap();
+                panic_on_range(color.r);
+                panic_on_range(color.g);
+                panic_on_range(color.b);
+
+                match material["type"].as_str().unwrap() {
+                    "lambertian" => {
+                        mat = material::Material::Lambertian(material::Lambertian {
+                            albedo: material["albedo"].as_f64().unwrap(),
+                            color,
+                        });
+                    }
+                    "metal" => {
+                        mat = material::Material::Metal(material::Metal {
+                            fuzz: material["fuzz"].as_f64().unwrap(),
+                            color,
+                        });
+                    }
+                    "dielectric" => {
+                        mat = material::Material::Dielectric(material::Dielectric {
+                            refraction: material["refraction"].as_f64().unwrap(),
+                            color,
+                        });
+                    }
+                    _ => panic!("material not supported"),
+                }
             }
         },
     }

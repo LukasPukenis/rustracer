@@ -325,12 +325,30 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
             let mat = collision_data.1.mat;
 
             match collision_data.1.kind {
-                loader::Kind::Light => Vec3::new_with(mat.color.r, mat.color.g, mat.color.b),
+                loader::Kind::Light => Vec3::new_with(1.0, 1.0, 1.0), // todo: lights are always white, too lazy to write a match for materials
                 loader::Kind::Object => {
                     let collision_point = collision_data.0.point;
                     let collision_normal = collision_data.0.normal;
 
-                    let color = Vec3::new_with(mat.color.r, mat.color.g, mat.color.b);
+                    let mut color = Vec3::new();
+
+                    match collision_data.1.mat {
+                        material::Material::Lambertian(m) => {
+                            color.x = m.color.r;
+                            color.y = m.color.g;
+                            color.z = m.color.b;
+                        }
+                        material::Material::Metal(m) => {
+                            color.x = m.color.r;
+                            color.y = m.color.g;
+                            color.z = m.color.b;
+                        }
+                        material::Material::Dielectric(m) => {
+                            color.x = m.color.r;
+                            color.y = m.color.g;
+                            color.z = m.color.b;
+                        }
+                    }
                     let mut light_intensity = 0.0;
 
                     // nowe as we've hit the object in the scene, we need to determine

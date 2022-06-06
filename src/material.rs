@@ -1,4 +1,4 @@
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Default)]
 pub struct Color {
     pub r: f64,
     pub g: f64,
@@ -6,20 +6,29 @@ pub struct Color {
 }
 
 #[derive(Copy, Clone, Debug)]
-pub struct Material {
-    pub color: Color,
-    pub reflective: f64,
+pub enum Material {
+    Metal(Metal),
+    Lambertian(Lambertian),
+    Dielectric(Dielectric),
 }
 
-impl Material {
-    pub fn new() -> Material {
-        Material {
-            reflective: 0.0,
-            color: Color {
-                r: 0.0,
-                g: 0.0,
-                b: 0.0,
-            },
-        }
-    }
+// has a color and fuzz factor which is how  much to scatter the rays
+#[derive(Copy, Clone, Debug)]
+pub struct Metal {
+    pub color: Color,
+    pub fuzz: f64,
+}
+
+// has a color and refraction index by how much to bend the light
+#[derive(Copy, Clone, Debug)]
+pub struct Dielectric {
+    pub color: Color,
+    pub refraction: f64,
+}
+
+// has a color and albedo which means how much of light it "eats". 0 means - only it's color will be visible
+#[derive(Copy, Clone, Debug)]
+pub struct Lambertian {
+    pub color: Color,
+    pub albedo: f64,
 }
