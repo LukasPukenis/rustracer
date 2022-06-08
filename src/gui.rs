@@ -1,5 +1,5 @@
-const AA_SAMPLES_MIN: u8 = 1;
-const AA_SAMPLES_MAX: u8 = 16;
+const AA_SAMPLES_MIN: u32 = 1;
+const AA_SAMPLES_MAX: u32 = 32;
 const MIN_POS: f64 = -8.0;
 const MAX_POS: f64 = 8.0;
 
@@ -104,7 +104,7 @@ pub struct GUIApp {
 
 #[derive(Copy, Clone)]
 pub struct Settings {
-    pub samples: u8,
+    pub samples: u32,
 }
 
 impl Default for Settings {
@@ -197,6 +197,7 @@ impl GUIApp {
                             }
                         }
 
+                        // todo: this doesnt work with the new partialmessage model
                         ProgressBar::new(progress)
                             .overlay_text("Rendering...")
                             .build(&ui);
@@ -246,6 +247,7 @@ impl GUIApp {
                                     }
                                 }
 
+                                println!("progress {}", data.progress);
                                 if data.progress >= 1.0 {
                                     self.state = self.last_state;
                                 }

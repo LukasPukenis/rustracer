@@ -3,6 +3,7 @@ use crate::gui::BBox;
 use crate::gui::PartialRenderMessage;
 use crate::gui::Settings;
 
+use crate::material;
 use crate::material::Material;
 use crate::ray::Ray;
 
@@ -16,14 +17,15 @@ use std::sync::mpsc;
 use std::sync::Arc;
 
 use std::sync::Mutex;
+use std::sync::RwLock;
 
 pub trait RenderCallbacks {
     fn progress(&mut self, v: f32);
 }
 
-const ambient_r: f64 = 0.1;
-const ambient_g: f64 = 0.1;
-const ambient_b: f64 = 0.1;
+const ambient_r: f64 = 0.0;
+const ambient_g: f64 = 0.0;
+const ambient_b: f64 = 0.0;
 
 pub struct Pixel {
     pub x: u64,
@@ -129,7 +131,6 @@ fn renderBlock(
 
     let scnheight = scene.lock().unwrap().height;
     let scnwidth = scene.lock().unwrap().width;
-    let _threads = 8; // 2^3 make configurable for the number of threads
 
     let aspect = 1.0;
     let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8
@@ -211,7 +212,7 @@ pub fn draw(
     let _progress_full = scnheight * scnwidth;
 
     // depending on the renderer size, increasing this produces multithreaded operation
-    let todo_bboxes_size = 1;
+    let todo_bboxes_size = 1; // todo: this doesnt seem to help rendering at all, might be mutex contention, investigate into RWmutex
     let mut bboxes = getBBoxesFor(scnwidth as i32, scnheight as i32, todo_bboxes_size);
     bboxes.reverse();
 
@@ -357,49 +358,83 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
                     // all the light sources in the scene and light the pixel accordingly
                     // we do not care about light's color at the moment
 
+                    let mut intensities: Vec<f64> = Vec::new();
                     for light in scn.lights() {
                         let shadow_dir = light.geometry.lock().unwrap().pos() - collision_point;
                         let shadow_ray = Ray::new(collision_point, shadow_dir);
 
-                        match collide(&shadow_ray, &scn) {
-                            None => {
-                                panic!("should happen")
-                            }
-                            Some(shadow_coll) => {
-                                match shadow_coll.1.kind {
-                                    loader::Kind::Light => {
-                                        let n = shadow_coll.0.point.clone().unit();
-                                        let m = collision_normal.clone().unit();
-                                        let dot = m.dot(&n);
+                        let mut collisions = 0;
+                        // let mut dots = Vec::new();
 
-                                        light_intensity += dot;
-                                        if light_intensity > 1.0 {
-                                            light_intensity = 1.0;
-                                        }
-                                        if light_intensity < 0.0 {
-                                            light_intensity = 0.0;
-                                        }
-                                    }
-                                    loader::Kind::Object => {
-                                        // todo: i have no idea why this never happens
-                                        // panic!("shoudl happen");
-                                    }
+                        let rays_cnt = 10;
+                        let rays = (1..rays_cnt).into_iter().map(|_| {
+                            Ray::new(
+                                collision_data.0.point,
+                                // todo: not a random point but we should map exactly on the light source
+                                shadow_dir
+                                    // + collision_data.0.normal
+                                    // todo: 0.1 is hardcoded, we should properly map on the light source geometry
+                                    + random_point_in_circle() * 0.1,
+                            )
+                        });
+
+                        rays.for_each(|r| match collide(&r, &scn) {
+                            None => {}
+                            Some(shadow_coll) => match shadow_coll.1.kind {
+                                // todo: check if it's the same light source
+                                loader::Kind::Light => {
+                                    collisions += 1;
                                 }
-                            }
-                        }
+                                loader::Kind::Object => {}
+                            },
+                        });
+
+                        let n = light.geometry.lock().unwrap().pos();
+                        let m = collision_normal.clone().unit();
+                        let dot = m.dot(&n).clamp(0.0, 1.0);
+
+                        let intense = collisions as f64 / rays_cnt as f64;
+                        intensities.push(dot * intense);
                     }
 
-                    let scatter_ray = Ray::new(
-                        collision_data.0.point,
-                        r.dir.reflect(&collision_data.0.normal),
-                    );
+                    // todo: check logic
+                    light_intensity = intensities.iter().sum::<f64>() / intensities.len() as f64;
+
+                    match collision_data.1.mat {
+                        material::Material::Lambertian(m) => {
+                            return color * light_intensity;
+                        }
+
+                        material::Material::Metal(m) => {
+                            let xx = r.dir.reflect(&collision_data.0.normal);
+
+                            let reflected_ray = Ray::new(collision_data.0.point, xx);
+                            return color * light_intensity
+                                + ray_color(&reflected_ray, &scn, depth - 1) * (m.fuzz);
+                        }
+                        material::Material::Dielectric(m) => {
+                            // double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);
+                            // double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
+
+                            // bool cannot_refract = refraction_ratio * sin_theta > 1.0;
+                            // vec3 direction;
+
+                            // if (cannot_refract)
+                            // direction = reflect(unit_direction, rec.normal);
+                            // else
+                            // direction = refract(unit_direction, rec.normal, refraction_ratio);
+
+                            // scattered = ray(rec.p, direction);
+                            todo!();
+                        }
+                    }
 
                     // for matte
                     // let target =
                     //     collision_data.0.point + collision_data.0.normal + random_point_in_circle();
 
                     // mirror/metal
-                    color * light_intensity + ray_color(&scatter_ray, &scn, depth - 1) * 0.5
+
                     // todo: hardcoded material number
                 }
             }
