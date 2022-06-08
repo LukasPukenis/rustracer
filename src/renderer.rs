@@ -15,7 +15,7 @@ impl Renderer {
     }
 
     pub fn new(width: u32, height: u32) -> Renderer {
-        let len = (width * height * 3) as usize;
+        let len = (width * height * 4) as usize;
         let mut data = Vec::with_capacity(len);
         for _i in 0..len as usize {
             data.push(0);
@@ -29,7 +29,7 @@ impl Renderer {
     }
 
     pub fn putpixel(&mut self, x: u32, y: u32, color: Vec3) {
-        let base = ((y * self.width + x) * 3) as usize;
+        let base = ((y * self.width + x) * 4) as usize;
 
         fn gamma(i: f64) -> f64 {
             i.sqrt()
@@ -38,7 +38,7 @@ impl Renderer {
         self.buffer[base + 0] = (gamma(color.x) * 255.0) as u8;
         self.buffer[base + 1] = (gamma(color.y) * 255.0) as u8;
         self.buffer[base + 2] = (gamma(color.z) * 255.0) as u8;
-        // self.buffer[base + 3] = 255;
+        self.buffer[base + 3] = 255;
     }
 
     pub fn clear(&mut self) {

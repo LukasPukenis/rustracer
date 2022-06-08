@@ -224,7 +224,7 @@ impl GUIApp {
                                     data: Cow::Owned(Vec::from(pixels)),
                                     width: width as u32,
                                     height: height as u32,
-                                    format: ClientFormat::U8U8U8,
+                                    format: ClientFormat::U8U8U8U8,
                                 };
 
                                 // // todo: question mark?
