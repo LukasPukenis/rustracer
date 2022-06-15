@@ -1,8 +1,10 @@
 use crate::animation::AnimationProperty;
 use crate::ray::Ray;
+use crate::scene::random_point_in_circle;
 use crate::scene::CollisionData;
 use crate::scene::Face;
 use crate::scene::Hitable;
+
 use crate::vec3::Vec3;
 
 #[derive(Copy, Clone)]
@@ -20,6 +22,10 @@ impl Sphere {
 const THRESHOLD: f64 = 0.001; //0.001;
 
 impl Hitable for Sphere {
+    fn get_random_point(&self) -> Vec3 {
+        random_point_in_circle() * self.radius
+    }
+
     fn set_property(&mut self, prop: AnimationProperty, val: f64) {
         match prop {
             AnimationProperty::X => self.pos.x = val,

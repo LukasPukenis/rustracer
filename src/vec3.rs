@@ -28,6 +28,10 @@ impl Vec3 {
         Vec3 { x, y, z }
     }
 
+    pub fn length_squared(&self) -> f64 {
+        (self.x.powi(2) + self.y.powi(2) + self.z.powi(2))
+    }
+
     pub fn length(&self) -> f64 {
         (self.x.powi(2) + self.y.powi(2) + self.z.powi(2)).sqrt()
     }

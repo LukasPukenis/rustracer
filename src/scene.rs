@@ -101,9 +101,11 @@ pub trait Hitable: Send + Sync {
     fn pos(&self) -> Vec3;
     fn pos_mut(&mut self) -> &mut Vec3;
     fn set_property(&mut self, prop: animation::AnimationProperty, val: f64);
+    fn get_random_point(&self) -> Vec3;
 }
 
-fn random_point_in_circle() -> Vec3 {
+
+pub fn random_point_in_circle() -> Vec3 {
     let mut rng = rand::thread_rng();
 
     loop {
@@ -113,7 +115,7 @@ fn random_point_in_circle() -> Vec3 {
         let v = Vec3::new_with(x, y, z);
 
         // todo: might be wrong
-        if v.length() * v.length() >= 1.0 {
+        if v.length_squared() >= 1.0 {
             continue;
         }
 
@@ -360,21 +362,15 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
 
                     let mut intensities: Vec<f64> = Vec::new();
                     for light in scn.lights() {
-                        let shadow_dir = light.geometry.lock().unwrap().pos() - collision_point;
-                        let shadow_ray = Ray::new(collision_point, shadow_dir);
-
                         let mut collisions = 0;
                         // let mut dots = Vec::new();
 
-                        let rays_cnt = 10;
-                        let rays = (1..rays_cnt).into_iter().map(|_| {
+                        let rays_cnt = 20;
+                        let rays = (0..rays_cnt).into_iter().map(|_| {
+                            let geom = light.geometry.lock().unwrap();
                             Ray::new(
-                                collision_data.0.point,
-                                // todo: not a random point but we should map exactly on the light source
-                                shadow_dir
-                                    // + collision_data.0.normal
-                                    // todo: 0.1 is hardcoded, we should properly map on the light source geometry
-                                    + random_point_in_circle() * 0.1,
+                                collision_point,
+                                (geom.pos() + geom.get_random_point()) - collision_point,
                             )
                         });
 
@@ -397,20 +393,26 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
                         intensities.push(dot * intense);
                     }
 
-                    // todo: check logic
                     light_intensity = intensities.iter().sum::<f64>() / intensities.len() as f64;
 
                     match collision_data.1.mat {
                         material::Material::Lambertian(m) => {
-                            return color * light_intensity;
+                            return color * light_intensity * m.albedo;
                         }
 
                         material::Material::Metal(m) => {
-                            let xx = r.dir.reflect(&collision_data.0.normal);
+                            let norm = collision_data.0.normal.clone().unit();
+                            let reflected_dir =
+                                r.dir.reflect(&norm).unit() + random_point_in_circle() * m.fuzz;
 
-                            let reflected_ray = Ray::new(collision_data.0.point, xx);
-                            return color * light_intensity
-                                + ray_color(&reflected_ray, &scn, depth - 1) * (m.fuzz);
+                            // todo: without this metallic material produces borders with the color of whats behind
+                            if norm.dot(&r.dir) > -0.60 {
+                                return color * light_intensity;
+                            }
+                            let reflected_ray =
+                                Ray::new(collision_data.0.point, reflected_dir.clone().unit());
+                            return color * light_intensity * m.albedo
+                                + ray_color(&reflected_ray, &scn, depth - 1) * m.albedo;
                         }
                         material::Material::Dielectric(m) => {
                             // double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);

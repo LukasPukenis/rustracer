@@ -17,6 +17,7 @@ pub enum Material {
 pub struct Metal {
     pub color: Color,
     pub fuzz: f64,
+    pub albedo: f64,
 }
 
 // has a color and refraction index by how much to bend the light

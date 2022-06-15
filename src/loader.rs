@@ -92,6 +92,7 @@ fn build_object_from_string(
                     "metal" => {
                         mat = material::Material::Metal(material::Metal {
                             fuzz: material["fuzz"].as_f64().unwrap(),
+                            albedo: material["albedo"].as_f64().unwrap(),
                             color,
                         });
                     }
