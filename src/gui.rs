@@ -3,7 +3,6 @@ const AA_SAMPLES_MAX: u32 = 32;
 const MIN_POS: f64 = -8.0;
 const MAX_POS: f64 = 8.0;
 
-use crate::animation::Animator;
 use crate::renderer::*;
 use crate::scene::Scene;
 use std::borrow::Cow;
@@ -87,7 +86,6 @@ impl PartialRenderMessage {
 }
 
 pub struct GUIApp {
-    animator: Animator,
     settings: Settings,
     frame: u32,
     state: State,
@@ -114,14 +112,13 @@ impl Default for Settings {
 }
 
 impl GUIApp {
-    pub fn new(scene: Arc<Mutex<Scene>>, width: u32, height: u32, animator: Animator) -> GUIApp {
+    pub fn new(scene: Arc<Mutex<Scene>>, width: u32, height: u32) -> GUIApp {
         let (tx, rx): (Sender<PartialRenderMessage>, Receiver<PartialRenderMessage>) =
             mpsc::channel();
 
         let (progtx, progrx) = mpsc::channel();
 
         GUIApp {
-            animator: animator,
             scene: scene,
             state: State::Idle,
             last_state: State::Idle,
@@ -145,7 +142,6 @@ impl GUIApp {
         let time = (1000.0 / fps * 0.01) * self.frame as f64;
 
         self.frame += 1;
-        self.animator.update(time);
         self.render();
     }
 

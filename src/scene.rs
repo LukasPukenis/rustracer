@@ -7,8 +7,6 @@ use crate::material;
 use crate::material::Material;
 use crate::ray::Ray;
 
-use crate::animation;
-
 use crate::loader;
 use crate::vec3::Vec3;
 use rand::prelude::*;
@@ -100,10 +98,8 @@ pub trait Hitable: Send + Sync {
     fn hit(&self, r: &Ray) -> Option<CollisionData>;
     fn pos(&self) -> Vec3;
     fn pos_mut(&mut self) -> &mut Vec3;
-    fn set_property(&mut self, prop: animation::AnimationProperty, val: f64);
     fn get_random_point(&self) -> Vec3;
 }
-
 
 pub fn random_point_in_circle() -> Vec3 {
     let mut rng = rand::thread_rng();

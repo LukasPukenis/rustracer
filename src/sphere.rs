@@ -1,4 +1,3 @@
-use crate::animation::AnimationProperty;
 use crate::ray::Ray;
 use crate::scene::random_point_in_circle;
 use crate::scene::CollisionData;
@@ -26,14 +25,6 @@ impl Hitable for Sphere {
         random_point_in_circle() * self.radius
     }
 
-    fn set_property(&mut self, prop: AnimationProperty, val: f64) {
-        match prop {
-            AnimationProperty::X => self.pos.x = val,
-            AnimationProperty::Y => self.pos.y = val,
-            AnimationProperty::Z => self.pos.z = val,
-            AnimationProperty::RADIUS => self.radius = val,
-        }
-    }
     fn pos(&self) -> Vec3 {
         self.pos
     }

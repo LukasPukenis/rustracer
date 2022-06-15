@@ -1,6 +1,5 @@
 use clap::Parser;
 
-mod animation;
 mod camera;
 mod gui;
 mod loader;
@@ -42,17 +41,11 @@ fn main() {
     let mut scene = scene::Scene::new(width as u64, height as u64);
 
     let objects = loader::load(&args.scene);
-    let mut animator = animation::Animator::new();
 
     for obj in objects {
         match obj.2 {
             loader::Kind::Object => scene.add_object(obj.0, obj.1),
             loader::Kind::Light => scene.add_light(obj.0, obj.1),
-        }
-
-        match obj.3 {
-            Some(anim) => animator.add(anim),
-            None => {}
         }
     }
 
@@ -60,7 +53,6 @@ fn main() {
         Arc::new(Mutex::new(scene)),
         width,
         height,
-        animator,
     )));
 
     if args.nogui {

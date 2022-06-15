@@ -1,6 +1,3 @@
-use crate::animation::Animation;
-use crate::animation::AnimationProperty;
-use crate::animation::Easing;
 use crate::material;
 use crate::scene::Hitable;
 use crate::sphere::Sphere;
@@ -16,14 +13,7 @@ pub enum Kind {
     Light,
 }
 
-pub fn load(
-    path: &str,
-) -> Vec<(
-    Arc<Mutex<dyn Hitable>>,
-    material::Material,
-    Kind,
-    Option<Animation>,
-)> {
+pub fn load(path: &str) -> Vec<(Arc<Mutex<dyn Hitable>>, material::Material, Kind)> {
     let contents = fs::read_to_string(path).expect("file not found");
     let j: Value = serde_json::from_str(&contents).unwrap();
     let mut results = Vec::new();
@@ -42,32 +32,8 @@ fn panic_on_range(x: f64) {
     }
 }
 
-fn parse_ease(s: &str) -> Easing {
-    match s {
-        "linear" => Easing::LINEAR,
-        _ => todo!(),
-    }
-}
-
-fn parse_property(s: &str) -> AnimationProperty {
-    match s {
-        "x" => AnimationProperty::X,
-        "y" => AnimationProperty::Y,
-        "z" => AnimationProperty::Z,
-        "radius" => AnimationProperty::RADIUS,
-        _ => todo!(),
-    }
-}
-
 // todo: Hitable is a combination and should be used split
-fn build_object_from_string(
-    s: &Value,
-) -> (
-    Arc<Mutex<dyn Hitable>>,
-    material::Material,
-    Kind,
-    Option<Animation>,
-) {
+fn build_object_from_string(s: &Value) -> (Arc<Mutex<dyn Hitable>>, material::Material, Kind) {
     let mat: material::Material;
 
     match &s["material"] {
@@ -123,29 +89,7 @@ fn build_object_from_string(
         _ => panic!("unrecognized type"),
     }
 
-    let mut animation: Option<Animation> = None;
-    match &s["animations"] {
-        _anim => match s["animations"].as_array() {
-            Some(data) => {
-                for a in data {
-                    for prop in a.as_object() {
-                        animation = Some(Animation::new(
-                            obj.clone(),
-                            parse_property(prop["prop"].as_str().unwrap()),
-                            prop["from"].as_f64().unwrap(),
-                            prop["to"].as_f64().unwrap(),
-                            prop["time"].as_f64().unwrap(),
-                            parse_ease(prop["ease"].as_str().unwrap()),
-                        ));
-                    }
-                }
-            }
-            None => {}
-        },
-        _ => {}
-    }
-
-    (obj, mat, kind, animation)
+    (obj, mat, kind)
 }
 
 fn build_sphere(s: &Value) -> Sphere {
