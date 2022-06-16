@@ -12,7 +12,6 @@ use rand::prelude::*;
 
 use std::sync::mpsc;
 use std::sync::Arc;
-
 use std::sync::Mutex;
 
 use crate::app::BBox;
@@ -35,7 +34,7 @@ pub struct Pixel {
 #[derive(Clone)]
 pub struct Object {
     mat: Material,
-    pub geometry: Arc<Mutex<dyn Hitable>>, // todo: why having Rc here and cloning doesn't work in a spawned thread?
+    pub geometry: Arc<dyn Hitable>,
     kind: loader::Kind,
 }
 
@@ -56,8 +55,7 @@ impl Scene {
         }
     }
 
-    // todo: how to get rid of mutex in args?
-    pub fn add_object(&mut self, g: Arc<Mutex<dyn Hitable>>, m: Material) {
+    pub fn add_object(&mut self, g: Arc<dyn Hitable>, m: Material) {
         self.objects.push(Object {
             kind: loader::Kind::Object,
             mat: m,
@@ -65,7 +63,7 @@ impl Scene {
         });
     }
 
-    pub fn add_light(&mut self, g: Arc<Mutex<dyn Hitable>>, m: Material) {
+    pub fn add_light(&mut self, g: Arc<dyn Hitable>, m: Material) {
         self.lights.push(Object {
             kind: loader::Kind::Light,
             mat: m,
@@ -121,15 +119,15 @@ pub fn random_point_in_circle() -> Vec3 {
 }
 
 fn renderBlock(
-    scene: Arc<Mutex<Scene>>,
+    scene: Arc<Scene>,
     camera: Camera,
     settings: app::Settings,
     bbox: BBox,
 ) -> Vec<Pixel> {
     let mut pixels = Vec::new();
 
-    let scnheight = scene.lock().unwrap().height;
-    let scnwidth = scene.lock().unwrap().width;
+    let scnheight = scene.height;
+    let scnwidth = scene.width;
 
     let aspect = 1.0;
     let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8
@@ -160,7 +158,7 @@ fn renderBlock(
                 );
 
                 // todo: spaghetti
-                let color = ray_color(&r, &scene.clone().lock().unwrap(), 100);
+                let color = ray_color(&r, &scene.clone(), 100);
                 final_color = final_color + color;
             }
 
@@ -182,7 +180,7 @@ fn renderBlock(
 
 // todo: static is bad?
 pub fn draw(
-    scene: Arc<Mutex<Scene>>,
+    scene: Arc<Scene>,
     camera: Camera,
     _progress_channel: mpsc::Sender<f32>,
     settings: app::Settings,
@@ -201,16 +199,16 @@ pub fn draw(
     let origin = camera.pos;
     let _lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - camera.dir;
 
-    let scnheight = scene.lock().unwrap().height;
-    let scnwidth = scene.lock().unwrap().width;
+    let scnheight = scene.height;
+    let scnwidth = scene.width;
 
     let final_frame = Vec::new();
 
     let _progress_full = scnheight * scnwidth;
 
     // depending on the renderer size, increasing this produces multithreaded operation
-    let todo_bboxes_size = 1; // todo: this doesnt seem to help rendering at all, might be mutex contention, investigate into RWmutex
-    let mut bboxes = getBBoxesFor(scnwidth as i32, scnheight as i32, todo_bboxes_size);
+    let todo_bboxes_size = settings.bboxes;
+    let mut bboxes = getBBoxesFor(scnwidth as i32, scnheight as i32, todo_bboxes_size as i32);
     bboxes.reverse();
 
     let pool = threadpool::ThreadPool::new(settings.threads as usize);
@@ -220,6 +218,7 @@ pub fn draw(
 
     let bboxes_len = bboxes.len();
 
+    println!("{} bboxes for {} threads", bboxes_len, settings.threads);
     for bbox in bboxes {
         let scene_clone = scene.clone();
         let tx_clone = tx.clone();
@@ -228,16 +227,12 @@ pub fn draw(
 
         pool.execute(move || {
             let pixels = renderBlock(scene_clone, camera, settings, bbox);
-            *progress_clone.lock().unwrap() += 1;
+            *progress_clone.lock().unwrap() += 1; // todo
 
             let p = *progress_clone.lock().unwrap() as f32 / bboxes_len as f32;
 
             tx_clone
-                .send(PartialRenderMessage::new(
-                    Arc::new(Mutex::new(pixels)),
-                    bbox,
-                    p,
-                ))
+                .send(PartialRenderMessage::new(Arc::new(pixels), bbox, p))
                 .unwrap();
         });
 
@@ -261,7 +256,7 @@ fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
     let mut closest_distance: f64 = 99999999999.9;
 
     for obj in scn.objects.iter() {
-        match obj.geometry.lock().unwrap().hit(r) {
+        match obj.geometry.hit(r) {
             None => continue,
             Some(data) => {
                 let distance = (r.origin - data.point).length();
@@ -275,7 +270,7 @@ fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
     }
 
     for light in scn.lights.iter() {
-        match light.geometry.lock().unwrap().hit(r) {
+        match light.geometry.hit(r) {
             None => continue,
             Some(data) => {
                 let distance = (r.origin - data.point).length();
@@ -352,12 +347,13 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Color {
                     let mut intensities: Vec<f64> = Vec::new();
                     for light in scn.lights() {
                         let mut collisions = 0;
-                        // let mut dots = Vec::new();
 
                         // todo: should come from settings maybe?
                         let rays_cnt = 50;
+                        let ll = light.clone();
+
                         let rays = (0..rays_cnt).into_iter().map(|_| {
-                            let geom = light.geometry.lock().unwrap();
+                            let geom = &ll.geometry;
                             Ray::new(
                                 collision_point,
                                 (geom.pos() + geom.get_random_point()) - collision_point,
@@ -375,7 +371,7 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Color {
                             },
                         });
 
-                        let n = light.geometry.lock().unwrap().pos();
+                        let n = light.geometry.pos();
                         let m = collision_normal.clone().unit();
                         let dot = m.dot(&n).clamp(0.0, 1.0);
 

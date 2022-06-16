@@ -29,18 +29,18 @@ impl BBox {
 }
 
 pub struct PartialRenderMessage {
-    pixel_data: Arc<Mutex<Vec<scene::Pixel>>>,
+    pixel_data: Arc<Vec<scene::Pixel>>,
     bbox: BBox,
     progress: f32,
 }
 
 impl PartialRenderMessage {
     pub fn new(
-        pixel_data: Arc<Mutex<Vec<scene::Pixel>>>,
+        pixel_data: Arc<Vec<scene::Pixel>>,
         bbox: BBox,
         progress: f32,
     ) -> PartialRenderMessage {
-        assert_eq!(pixel_data.lock().unwrap().len(), (bbox.w * bbox.h) as usize);
+        assert_eq!(pixel_data.len(), (bbox.w * bbox.h) as usize);
 
         PartialRenderMessage {
             pixel_data,
@@ -52,15 +52,30 @@ impl PartialRenderMessage {
 
 #[derive(Copy, Clone)]
 pub struct Settings {
+    // samples per pixel
     pub samples: u32,
+    // threads
     pub threads: usize,
+    // how many blocks to split the scene to. ideally should map to N*threads but parts might be more complex
+    // for some thread. Todo: do something for that
+    pub bboxes: usize,
 }
 
+impl Settings {
+    pub fn new(samples: u32, threads: usize, bboxes: usize) -> Settings {
+        Settings {
+            samples,
+            threads,
+            bboxes,
+        }
+    }
+}
 impl Default for Settings {
     fn default() -> Settings {
         Settings {
             samples: 1,
             threads: 1,
+            bboxes: 1,
         }
     }
 }
@@ -68,7 +83,7 @@ impl Default for Settings {
 pub fn render(
     renderer: &mut renderer::Renderer,
     camera: camera::Camera,
-    scene: Arc<Mutex<Scene>>,
+    scene: Arc<Scene>,
     _width: u32,
     _height: u32,
     settings: Settings,
@@ -81,10 +96,10 @@ pub fn render(
         match rx.try_recv() {
             Ok(data) => {
                 // todo: locking
-                for pixel in &*data.pixel_data.lock().unwrap() {
+                for pixel in &*data.pixel_data {
                     renderer.putpixel(pixel.x as u32, pixel.y as u32, pixel.color);
                 }
-                println!("{}", data.progress);
+                println!("progress: {}", data.progress);
                 if data.progress >= 1.0 {
                     break;
                 }

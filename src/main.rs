@@ -55,12 +55,13 @@ fn main() {
         60.0,
     );
 
-    let settings = app::Settings::default();
+    // let settings = app::Settings::new(1, 4, 16);
+    let settings = app::Settings::new(32, 8, 16);
 
     app::render(
         &mut renderer,
         camera,
-        Arc::new(Mutex::new(scene)),
+        Arc::new(scene),
         width,
         height,
         settings,

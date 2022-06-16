@@ -5,7 +5,6 @@ use crate::vec3::Vec3;
 use serde_json::Value;
 use std::fs;
 use std::sync::Arc;
-use std::sync::Mutex;
 
 #[derive(PartialEq, Clone)]
 pub enum Kind {
@@ -13,7 +12,7 @@ pub enum Kind {
     Light,
 }
 
-pub fn load(path: &str) -> Vec<(Arc<Mutex<dyn Hitable>>, material::Material, Kind)> {
+pub fn load(path: &str) -> Vec<(Arc<dyn Hitable>, material::Material, Kind)> {
     let contents = fs::read_to_string(path).expect("file not found");
     let j: Value = serde_json::from_str(&contents).unwrap();
     let mut results = Vec::new();
@@ -33,7 +32,7 @@ fn panic_on_range(x: f64) {
 }
 
 // todo: Hitable is a combination and should be used split
-fn build_object_from_string(s: &Value) -> (Arc<Mutex<dyn Hitable>>, material::Material, Kind) {
+fn build_object_from_string(s: &Value) -> (Arc<dyn Hitable>, material::Material, Kind) {
     let mat: material::Material;
 
     match &s["material"] {
@@ -74,16 +73,16 @@ fn build_object_from_string(s: &Value) -> (Arc<Mutex<dyn Hitable>>, material::Ma
         },
     }
 
-    let obj: Arc<Mutex<dyn Hitable>>;
+    let obj: Arc<dyn Hitable>;
     let kind: Kind;
 
     match s["type"].as_str().unwrap() {
         "sphere" => {
-            obj = Arc::new(Mutex::new(build_sphere(s)));
+            obj = Arc::new(build_sphere(s));
             kind = Kind::Object;
         }
         "point_light" => {
-            obj = Arc::new(Mutex::new(build_sphere(s)));
+            obj = Arc::new(build_sphere(s));
             kind = Kind::Light;
         }
         _ => panic!("unrecognized type"),
