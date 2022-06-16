@@ -185,7 +185,7 @@ pub fn draw(
     _progress_channel: mpsc::Sender<f32>,
     settings: app::Settings,
     tx: mpsc::Sender<PartialRenderMessage>,
-) -> Vec<Pixel> {
+) {
     // todo, lets use locking at the top to avoid repetition
     // let scene = scn.lock().unwrap();
     let aspect = 1.0;
@@ -201,8 +201,6 @@ pub fn draw(
 
     let scnheight = scene.height;
     let scnwidth = scene.width;
-
-    let final_frame = Vec::new();
 
     let _progress_full = scnheight * scnwidth;
 
@@ -246,8 +244,6 @@ pub fn draw(
     //     // todo: progress
     //     h.join().unwrap();
     // }
-
-    final_frame
 }
 
 fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {

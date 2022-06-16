@@ -12,7 +12,7 @@ use std::sync::mpsc;
 use std::sync::mpsc::{Receiver, Sender};
 
 use std::sync::Arc;
-use std::sync::Mutex;
+
 
 #[derive(PartialEq, Debug, Copy, Clone)]
 pub struct BBox {
@@ -91,7 +91,7 @@ pub fn render(
     let (tx, rx): (Sender<PartialRenderMessage>, Receiver<PartialRenderMessage>) = mpsc::channel();
     let (progtx, _progrx) = mpsc::channel();
 
-    let _pixels = scene::draw(scene, camera, progtx, settings, tx);
+    scene::draw(scene, camera, progtx, settings, tx);
     loop {
         match rx.try_recv() {
             Ok(data) => {

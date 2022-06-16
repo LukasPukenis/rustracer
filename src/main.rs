@@ -12,7 +12,7 @@ mod support;
 mod vec3;
 
 use std::sync::Arc;
-use std::sync::Mutex;
+
 use std::time::SystemTime;
 
 #[derive(Parser, Debug)]
