@@ -1,4 +1,5 @@
-use crate::vec3::Vec3;
+use crate::material::Color;
+
 use std::fs::File;
 use std::io::BufWriter;
 use std::path::Path;
@@ -28,16 +29,16 @@ impl Renderer {
         }
     }
 
-    pub fn putpixel(&mut self, x: u32, y: u32, color: Vec3) {
+    pub fn putpixel(&mut self, x: u32, y: u32, color: Color) {
         let base = ((y * self.width + x) * 4) as usize;
 
         fn gamma(i: f64) -> f64 {
             i.sqrt()
         }
 
-        self.buffer[base + 0] = (gamma(color.x) * 255.0) as u8;
-        self.buffer[base + 1] = (gamma(color.y) * 255.0) as u8;
-        self.buffer[base + 2] = (gamma(color.z) * 255.0) as u8;
+        self.buffer[base + 0] = (gamma(color.r) * 255.0) as u8;
+        self.buffer[base + 1] = (gamma(color.g) * 255.0) as u8;
+        self.buffer[base + 2] = (gamma(color.b) * 255.0) as u8;
         self.buffer[base + 3] = 255;
     }
 

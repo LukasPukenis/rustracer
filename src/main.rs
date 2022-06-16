@@ -1,7 +1,7 @@
 use clap::Parser;
 
+mod app;
 mod camera;
-mod gui;
 mod loader;
 mod material;
 mod ray;
@@ -13,6 +13,7 @@ mod vec3;
 
 use std::sync::Arc;
 use std::sync::Mutex;
+use std::time::SystemTime;
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -28,9 +29,6 @@ struct Args {
 
     #[clap(short, long)]
     scene: String,
-
-    #[clap(short, long)]
-    nogui: bool,
 }
 
 fn main() {
@@ -49,19 +47,27 @@ fn main() {
         }
     }
 
-    let mut GUI = Arc::new(Mutex::new(gui::GUIApp::new(
+    let start = SystemTime::now();
+    let mut renderer = renderer::Renderer::new(width, height);
+    let camera = camera::Camera::new(
+        vec3::Vec3::new_with(0.0, 0.0, 1.0), // pos
+        vec3::Vec3::new_with(0.0, 0.0, 1.0), // dir
+        60.0,
+    );
+
+    let settings = app::Settings::default();
+
+    app::render(
+        &mut renderer,
+        camera,
         Arc::new(Mutex::new(scene)),
         width,
         height,
-    )));
+        settings,
+    );
+    let elapsed = start.elapsed().unwrap();
 
-    if args.nogui {
-        // todo
-    } else {
-        let system = support::init(file!());
-        let gui_clone = GUI.clone();
-        system.main_loop(move |_, ui, ctx, texs| {
-            gui_clone.lock().unwrap().update(ui, ctx, texs);
-        });
-    }
+    println!("Rendering took {}ms", elapsed.as_millis());
+    renderer.save(&args.output);
+    println!("Saved at {}", args.output);
 }

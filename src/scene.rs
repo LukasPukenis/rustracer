@@ -1,13 +1,12 @@
 use crate::camera::Camera;
-use crate::gui::BBox;
-use crate::gui::PartialRenderMessage;
-use crate::gui::Settings;
 
 use crate::material;
 use crate::material::Material;
 use crate::ray::Ray;
 
+use crate::app;
 use crate::loader;
+use crate::material::Color;
 use crate::vec3::Vec3;
 use rand::prelude::*;
 
@@ -15,7 +14,9 @@ use std::sync::mpsc;
 use std::sync::Arc;
 
 use std::sync::Mutex;
-use std::sync::RwLock;
+
+use crate::app::BBox;
+use crate::app::PartialRenderMessage;
 
 pub trait RenderCallbacks {
     fn progress(&mut self, v: f32);
@@ -28,7 +29,7 @@ const ambient_b: f64 = 0.0;
 pub struct Pixel {
     pub x: u64,
     pub y: u64,
-    pub color: Vec3,
+    pub color: material::Color,
 }
 
 #[derive(Clone)]
@@ -122,7 +123,7 @@ pub fn random_point_in_circle() -> Vec3 {
 fn renderBlock(
     scene: Arc<Mutex<Scene>>,
     camera: Camera,
-    settings: Settings,
+    settings: app::Settings,
     bbox: BBox,
 ) -> Vec<Pixel> {
     let mut pixels = Vec::new();
@@ -143,7 +144,7 @@ fn renderBlock(
 
     for j in bbox.x..(bbox.x + bbox.w) {
         for i in bbox.y..(bbox.y + bbox.h) {
-            let mut final_color = Vec3::new();
+            let mut final_color = Color::default();
             let mut rng = rand::thread_rng();
 
             // todo: should be easy to parallelize by taking the screen in blocks for each thread
@@ -164,9 +165,9 @@ fn renderBlock(
             }
 
             final_color = final_color / settings.samples as f64;
-            final_color.x = final_color.x.clamp(0.0, 1.0);
-            final_color.y = final_color.y.clamp(0.0, 1.0);
-            final_color.z = final_color.z.clamp(0.0, 1.0);
+            final_color.r = final_color.r.clamp(0.0, 1.0);
+            final_color.g = final_color.g.clamp(0.0, 1.0);
+            final_color.b = final_color.b.clamp(0.0, 1.0);
 
             pixels.push(Pixel {
                 x: i as u64,
@@ -183,9 +184,8 @@ fn renderBlock(
 pub fn draw(
     scene: Arc<Mutex<Scene>>,
     camera: Camera,
-    _thread_cnt: usize,
     _progress_channel: mpsc::Sender<f32>,
-    settings: Settings,
+    settings: app::Settings,
     tx: mpsc::Sender<PartialRenderMessage>,
 ) -> Vec<Pixel> {
     // todo, lets use locking at the top to avoid repetition
@@ -203,7 +203,6 @@ pub fn draw(
 
     let scnheight = scene.lock().unwrap().height;
     let scnwidth = scene.lock().unwrap().width;
-    let threads = 8; // 2^3 make configurable for the number of threads
 
     let final_frame = Vec::new();
 
@@ -214,7 +213,7 @@ pub fn draw(
     let mut bboxes = getBBoxesFor(scnwidth as i32, scnheight as i32, todo_bboxes_size);
     bboxes.reverse();
 
-    let pool = threadpool::ThreadPool::new(threads as usize);
+    let pool = threadpool::ThreadPool::new(settings.threads as usize);
     // let mut handles: Vec<std::thread::JoinHandle<_>> = Vec::new();
 
     let progress = Arc::new(Mutex::new(0));
@@ -224,13 +223,6 @@ pub fn draw(
     for bbox in bboxes {
         let scene_clone = scene.clone();
         let tx_clone = tx.clone();
-        // let h = std::thread::spawn(move || {
-        //     let pixels = renderBlock(scene_clone, camera, settings, bbox);
-        //     tx_clone.send(PartialRenderMessage::new(
-        //         Arc::new(Mutex::new(pixels)),
-        //         bbox,
-        //     ))
-        // });
 
         let progress_clone = progress.clone();
 
@@ -314,17 +306,18 @@ fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
  */
 
 // todo: Vec3->Color
-fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
+fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Color {
     if depth <= 0 {
-        return Vec3::new_with_all(0.0);
+        return Color::default();
     }
 
     match collide(r, &scn) {
         Some(collision_data) => {
-            let mat = collision_data.1.mat;
+            let _mat = collision_data.1.mat;
 
             match collision_data.1.kind {
-                loader::Kind::Light => Vec3::new_with(1.0, 1.0, 1.0), // todo: lights are always white, too lazy to write a match for materials
+                // todo: should be actual color of light?
+                loader::Kind::Light => Color::white(),
                 loader::Kind::Object => {
                     let collision_point = collision_data.0.point;
                     let collision_normal = collision_data.0.normal;
@@ -361,7 +354,8 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
                         let mut collisions = 0;
                         // let mut dots = Vec::new();
 
-                        let rays_cnt = 20;
+                        // todo: should come from settings maybe?
+                        let rays_cnt = 50;
                         let rays = (0..rays_cnt).into_iter().map(|_| {
                             let geom = light.geometry.lock().unwrap();
                             Ray::new(
@@ -393,7 +387,7 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
 
                     match collision_data.1.mat {
                         material::Material::Lambertian(m) => {
-                            return color * light_intensity * m.albedo;
+                            return (color * light_intensity * m.albedo).into();
                         }
 
                         material::Material::Metal(m) => {
@@ -403,14 +397,15 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
 
                             // todo: without this metallic material produces borders with the color of whats behind
                             if norm.dot(&r.dir) > -0.60 {
-                                return color * light_intensity;
+                                return (color * light_intensity).into();
                             }
                             let reflected_ray =
                                 Ray::new(collision_data.0.point, reflected_dir.clone().unit());
-                            return color * light_intensity * m.albedo
-                                + ray_color(&reflected_ray, &scn, depth - 1) * m.albedo;
+
+                            let rcol: Vec3 = ray_color(&reflected_ray, &scn, depth - 1).into();
+                            return (color * light_intensity * m.albedo + rcol * m.albedo).into();
                         }
-                        material::Material::Dielectric(m) => {
+                        material::Material::Dielectric(_m) => {
                             // double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);
                             // double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
 
@@ -437,7 +432,7 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Vec3 {
                 }
             }
         }
-        None => Vec3::new_with(ambient_r, ambient_g, ambient_b), // todo: hardcoded
+        None => Color::new(ambient_r, ambient_g, ambient_b),
     }
 }
 
