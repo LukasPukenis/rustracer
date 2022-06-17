@@ -223,7 +223,7 @@ pub fn draw(
 
     let (progtx, progrx) = mpsc::channel();
 
-    let mut total_progress = Arc::new(Mutex::new(0.0));
+    let total_progress = Arc::new(Mutex::new(0.0));
 
     let tx_clone3 = tx.clone();
     std::thread::spawn(move || loop {
@@ -267,7 +267,6 @@ pub fn draw(
 
     for bbox in bboxes {
         let scene_clone = scene.clone();
-        let tx_clone1 = tx.clone();
         let tx_clone2 = tx.clone();
 
         let progress_clone = progress.clone();
@@ -375,7 +374,6 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                             color.z = m.color.b;
                         }
                     }
-                    let mut light_intensity = 0.0;
 
                     // nowe as we've hit the object in the scene, we need to determine
                     // it's relation to the light sources, it might be in the shadow or might be
@@ -418,7 +416,8 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                         intensities.push(dot * intense);
                     }
 
-                    light_intensity = intensities.iter().sum::<f64>() / intensities.len() as f64;
+                    let light_intensity =
+                        intensities.iter().sum::<f64>() / intensities.len() as f64;
 
                     match collision_data.1.mat {
                         material::Material::Lambertian(m) => {
