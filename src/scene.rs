@@ -229,8 +229,26 @@ pub fn draw(
     std::thread::spawn(move || loop {
         match progrx.try_recv() {
             Ok(p) => {
-                let progress = *total_progress.lock().unwrap() + p * progress_ratio;
-                println!("progress: {}", progress);
+                let progress: f64 = *total_progress.lock().unwrap() + p * progress_ratio;
+                let progress_bar_symbols = 30;
+                let ratio: f64 = 1.0 / progress_bar_symbols as f64;
+
+                let symbol_count: usize = (progress / ratio) as usize;
+                let progress_str: String = (0..symbol_count).into_iter().map(|_| ".").collect();
+
+                let padding: String = (0..(progress_bar_symbols - symbol_count))
+                    .into_iter()
+                    .map(|_| " ")
+                    .collect();
+
+                let progress_full_str =
+                    String::from("[") + &progress_str + &padding + &String::from("]");
+
+                println!(
+                    "Progress: {} {}%",
+                    progress_full_str,
+                    (progress * 100.0) as usize
+                );
                 *total_progress.lock().unwrap() = progress;
 
                 tx_clone3
