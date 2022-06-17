@@ -20,10 +20,6 @@ impl Vec3 {
         }
     }
 
-    pub fn new_with_all(v: f64) -> Vec3 {
-        Vec3 { x: v, y: v, z: v }
-    }
-
     pub fn new_with(x: f64, y: f64, z: f64) -> Vec3 {
         Vec3 { x, y, z }
     }

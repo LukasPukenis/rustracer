@@ -8,7 +8,6 @@ mod ray;
 mod renderer;
 mod scene;
 mod sphere;
-mod support;
 mod vec3;
 
 use std::sync::Arc;

@@ -11,10 +11,6 @@ pub struct Renderer {
 }
 
 impl Renderer {
-    pub fn data(&self) -> (u32, u32, &[u8]) {
-        (self.width, self.height, &self.buffer)
-    }
-
     pub fn new(width: u32, height: u32) -> Renderer {
         let len = (width * height * 4) as usize;
         let mut data = Vec::with_capacity(len);
@@ -40,12 +36,6 @@ impl Renderer {
         self.buffer[base + 1] = (gamma(color.g) * 255.0) as u8;
         self.buffer[base + 2] = (gamma(color.b) * 255.0) as u8;
         self.buffer[base + 3] = 255;
-    }
-
-    pub fn clear(&mut self) {
-        for i in self.buffer.iter_mut() {
-            *i = 0;
-        }
     }
 
     pub fn save(&self, path: &str) {

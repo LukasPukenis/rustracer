@@ -1,8 +1,3 @@
-const AA_SAMPLES_MIN: u32 = 1;
-const AA_SAMPLES_MAX: u32 = 32;
-const MIN_POS: f64 = -8.0;
-const MAX_POS: f64 = 8.0;
-
 use crate::scene::Scene;
 
 use crate::camera;
@@ -23,15 +18,9 @@ pub struct BBox {
     pub h: i32,
 }
 
-impl BBox {
-    pub fn new(x: i32, y: i32, w: i32, h: i32) -> BBox {
-        BBox { x, y, w, h }
-    }
-}
-
 pub enum PartialRenderMessage {
-    pixels_todo(PartialRenderMessagePixels),
-    progress_todo(f64),
+    PixelsTodo(PartialRenderMessagePixels),
+    ProgressTodo(f64),
 }
 pub struct PartialRenderMessagePixels {
     pub pixel_data: Arc<Vec<scene::Pixel>>,
@@ -87,12 +76,12 @@ pub fn render(
     let h = thread::spawn(move || loop {
         match rx.try_recv() {
             Ok(data) => match data {
-                PartialRenderMessage::progress_todo(progress) => {
+                PartialRenderMessage::ProgressTodo(progress) => {
                     if progress >= 1.0 {
                         break;
                     }
                 }
-                PartialRenderMessage::pixels_todo(data) => {
+                PartialRenderMessage::PixelsTodo(data) => {
                     let mut locked_renderer = renderer.lock().unwrap();
 
                     for pixel in &*data.pixel_data {

@@ -21,9 +21,9 @@ pub trait RenderCallbacks {
     fn progress(&mut self, v: f32);
 }
 
-const ambient_r: f64 = 0.0;
-const ambient_g: f64 = 0.0;
-const ambient_b: f64 = 0.0;
+const AMBIENT_R: f64 = 0.0;
+const AMBIENT_G: f64 = 0.0;
+const AMBIENT_B: f64 = 0.0;
 
 pub struct Pixel {
     pub x: u64,
@@ -75,10 +75,6 @@ impl Scene {
     pub fn lights(&self) -> &Vec<Object> {
         &self.lights
     }
-
-    pub fn objects(&self) -> &Vec<Object> {
-        &self.objects
-    }
 }
 
 pub enum Face {
@@ -118,7 +114,7 @@ pub fn random_point_in_circle() -> Vec3 {
     }
 }
 
-fn renderBlock(
+fn render_block(
     scene: Arc<Scene>,
     camera: Camera,
     settings: app::Settings,
@@ -209,7 +205,7 @@ pub fn draw(
 
     // depending on the renderer size, increasing this produces multithreaded operation
     let todo_bboxes_size = settings.bboxes;
-    let mut bboxes = getBBoxesFor(scnwidth as i32, scnheight as i32, todo_bboxes_size as i32);
+    let mut bboxes = get_bboxes_for(scnwidth as i32, scnheight as i32, todo_bboxes_size as i32);
     bboxes.reverse();
 
     let pool = threadpool::ThreadPool::new(settings.threads as usize);
@@ -252,7 +248,7 @@ pub fn draw(
                 *total_progress.lock().unwrap() = progress;
 
                 tx_clone3
-                    .send(PartialRenderMessage::progress_todo {
+                    .send(PartialRenderMessage::ProgressTodo {
                         0: *total_progress.lock().unwrap(),
                     })
                     .unwrap();
@@ -273,13 +269,13 @@ pub fn draw(
 
         let progtx = progtx.clone();
         pool.execute(move || {
-            let pixels = renderBlock(scene_clone, camera, settings, bbox, progtx);
+            let pixels = render_block(scene_clone, camera, settings, bbox, progtx);
             *progress_clone.lock().unwrap() += 1; // todo
 
             // let p = *progress_clone.lock().unwrap() as f32 / bboxes_len as f32;
 
             tx_clone2
-                .send(PartialRenderMessage::pixels_todo {
+                .send(PartialRenderMessage::PixelsTodo {
                     0: PartialRenderMessagePixels {
                         pixel_data: Arc::new(pixels),
                         bbox: bbox,
@@ -467,11 +463,11 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                 }
             }
         }
-        None => Color::new(ambient_r, ambient_g, ambient_b),
+        None => Color::new(AMBIENT_R, AMBIENT_G, AMBIENT_B),
     }
 }
 
-fn getBBoxesFor(w: i32, h: i32, subdivisions: i32) -> Vec<BBox> {
+fn get_bboxes_for(w: i32, h: i32, subdivisions: i32) -> Vec<BBox> {
     let block_w = w / subdivisions;
     let block_h = h / subdivisions;
 
@@ -551,7 +547,7 @@ fn getBBoxesFor(w: i32, h: i32, subdivisions: i32) -> Vec<BBox> {
 }
 #[cfg(test)]
 mod tests {
-    use super::getBBoxesFor;
+    use super::get_bboxes_for;
     use super::BBox;
 
     #[test]
@@ -559,7 +555,7 @@ mod tests {
         // let b = getBBoxesFor(8, 8, 8);
         // assert_eq!(b.len(), 64);
 
-        let bboxes = getBBoxesFor(4, 4, 4);
+        let bboxes = get_bboxes_for(4, 4, 4);
         assert_eq!(bboxes.len(), 16);
 
         let expected = vec![
