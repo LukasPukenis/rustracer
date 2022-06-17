@@ -31,7 +31,6 @@ fn panic_on_range(x: f64) {
     }
 }
 
-// todo: Hitable is a combination and should be used split
 fn build_object_from_string(s: &Value) -> (Arc<dyn Hitable>, material::Material, Kind) {
     let mat: material::Material;
 

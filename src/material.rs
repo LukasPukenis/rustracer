@@ -98,7 +98,6 @@ impl Color {
         Color { r, g, b }
     }
 
-    // todo: hide the public functions where not needed?
     pub fn white() -> Color {
         Color {
             r: 1.0,

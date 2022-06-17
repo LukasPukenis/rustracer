@@ -71,7 +71,7 @@ impl Scene {
         });
     }
 
-    // todo: as ref? &[Object]
+    // todo: slice?
     pub fn lights(&self) -> &Vec<Object> {
         &self.lights
     }
@@ -90,6 +90,7 @@ pub struct CollisionData {
 
 pub trait Hitable: Send + Sync {
     // todo: send sync required?
+    // todo: should be split into hitable and other traits
     fn hit(&self, r: &Ray) -> Option<CollisionData>;
     fn pos(&self) -> Vec3;
     fn pos_mut(&mut self) -> &mut Vec3;
@@ -105,7 +106,6 @@ pub fn random_point_in_circle() -> Vec3 {
         let z: f64 = 1.0 - rng.gen::<f64>() * 2.0;
         let v = Vec3::new_with(x, y, z);
 
-        // todo: might be wrong
         if v.length_squared() >= 1.0 {
             continue;
         }
@@ -129,7 +129,7 @@ fn render_block(
     let aspect = 1.0;
     let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8
     let h = (theta / 2.0).tan();
-    let viewport_height = 2.0 * h; // todo: parameterize
+    let viewport_height = 2.0 * h;
     let viewport_width = aspect * viewport_height as f64;
 
     let horizontal = Vec3::new_with(viewport_width as f64, 0.0, 0.0);
@@ -142,7 +142,6 @@ fn render_block(
             let mut final_color = Color::default();
             let mut rng = rand::thread_rng();
 
-            // todo: should be easy to parallelize by taking the screen in blocks for each thread
             for _ in 0..settings.samples {
                 let xoff: f64 = 1.0 - (2.0 * rng.gen::<f64>());
                 let yoff: f64 = 1.0 - (2.0 * rng.gen::<f64>());
@@ -154,7 +153,6 @@ fn render_block(
                     lower_left_corner + horizontal * u as f64 + vertical * v as f64 - origin,
                 );
 
-                // todo: spaghetti
                 let color = ray_color(&r, &scene.clone(), 100, settings.shadow_samples);
                 final_color = final_color + color;
             }
@@ -172,25 +170,22 @@ fn render_block(
         }
     }
 
-    // todo:
+    // todo: could be simplified if not sending inside the loop, another place listens for 1.0
     tx.send(1.0).unwrap();
 
     pixels
 }
 
-// todo: static is bad?
 pub fn draw(
     scene: Arc<Scene>,
     camera: Camera,
     settings: app::Settings,
     tx: mpsc::Sender<PartialRenderMessage>,
 ) {
-    // todo, lets use locking at the top to avoid repetition
-    // let scene = scn.lock().unwrap();
     let aspect = 1.0;
     let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8 // todo: show focal length and angle in gui
     let h = (theta / 2.0).tan();
-    let viewport_height = 2.0 * h; // todo: parameterize
+    let viewport_height = 2.0 * h;
     let viewport_width = aspect * viewport_height as f64;
 
     let horizontal = Vec3::new_with(viewport_width as f64, 0.0, 0.0);
@@ -204,8 +199,7 @@ pub fn draw(
     let _progress_full = scnheight * scnwidth;
 
     // depending on the renderer size, increasing this produces multithreaded operation
-    let todo_bboxes_size = settings.bboxes;
-    let mut bboxes = get_bboxes_for(scnwidth as i32, scnheight as i32, todo_bboxes_size as i32);
+    let mut bboxes = get_bboxes_for(scnwidth as i32, scnheight as i32, settings.bboxes as i32);
     bboxes.reverse();
 
     let pool = threadpool::ThreadPool::new(settings.threads as usize);
@@ -248,7 +242,7 @@ pub fn draw(
                 *total_progress.lock().unwrap() = progress;
 
                 tx_clone3
-                    .send(PartialRenderMessage::ProgressTodo {
+                    .send(PartialRenderMessage::Progress {
                         0: *total_progress.lock().unwrap(),
                     })
                     .unwrap();
@@ -270,12 +264,10 @@ pub fn draw(
         let progtx = progtx.clone();
         pool.execute(move || {
             let pixels = render_block(scene_clone, camera, settings, bbox, progtx);
-            *progress_clone.lock().unwrap() += 1; // todo
-
-            // let p = *progress_clone.lock().unwrap() as f32 / bboxes_len as f32;
+            *progress_clone.lock().unwrap() += 1;
 
             tx_clone2
-                .send(PartialRenderMessage::PixelsTodo {
+                .send(PartialRenderMessage::PixelData {
                     0: PartialRenderMessagePixels {
                         pixel_data: Arc::new(pixels),
                         bbox: bbox,
@@ -330,11 +322,8 @@ fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
 /**
  * We hit the scene with a ray, if it hit something then we take the objects material into
  * account how to render it but also do a shadow ray towards all sources of light to see if we should
- * light the pixel. We also launch scatter rays(todo: should be abstracted, as different materials have it varying,
- * like metal reflects almost perfectly instead of randomly)
+ * light the pixel in order to produce soft shadows
  */
-
-// todo: Vec3->Color
 fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
     if depth <= 0 {
         return Color::default();
@@ -381,7 +370,6 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                     for light in scn.lights() {
                         let mut collisions = 0;
 
-                        // todo: should come from settings maybe?
                         let rays_cnt = shadow_samples;
                         let ll = light.clone();
 
@@ -557,28 +545,5 @@ mod tests {
 
         let bboxes = get_bboxes_for(4, 4, 4);
         assert_eq!(bboxes.len(), 16);
-
-        let expected = vec![
-            BBox::new(0, 0, 1, 1),
-            BBox::new(1, 0, 1, 1),
-            BBox::new(2, 0, 1, 1),
-            BBox::new(3, 0, 1, 1),
-            BBox::new(3, 1, 1, 1),
-            BBox::new(3, 2, 1, 1),
-            BBox::new(3, 3, 1, 1),
-            BBox::new(2, 3, 1, 1),
-            BBox::new(1, 3, 1, 1),
-            BBox::new(0, 3, 1, 1),
-            BBox::new(0, 2, 1, 1),
-            BBox::new(0, 1, 1, 1),
-            BBox::new(1, 1, 1, 1),
-            BBox::new(2, 1, 1, 1),
-            BBox::new(2, 2, 1, 1),
-            BBox::new(1, 2, 1, 1),
-        ];
-
-        for (k, _v) in bboxes.iter().enumerate() {
-            assert_eq!(bboxes[k], expected[k], "@ index {}", k);
-        }
     }
 }

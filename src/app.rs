@@ -19,8 +19,8 @@ pub struct BBox {
 }
 
 pub enum PartialRenderMessage {
-    PixelsTodo(PartialRenderMessagePixels),
-    ProgressTodo(f64),
+    PixelData(PartialRenderMessagePixels),
+    Progress(f64),
 }
 pub struct PartialRenderMessagePixels {
     pub pixel_data: Arc<Vec<scene::Pixel>>,
@@ -33,8 +33,9 @@ pub struct Settings {
     pub samples: u32,
     // threads
     pub threads: usize,
-    // how many blocks to split the scene to. ideally should map to N*threads but parts might be more complex
-    // for some thread. Todo: do something for that
+
+    // how many blocks to split the scene to. ideally should map to N*threads but some parts might be more complex
+    // so it's totally guesswork at the moment
     pub bboxes: usize,
 
     // soft shadows are produced by throwing rays into the light source and averaging how many hit it
@@ -76,12 +77,12 @@ pub fn render(
     let h = thread::spawn(move || loop {
         match rx.try_recv() {
             Ok(data) => match data {
-                PartialRenderMessage::ProgressTodo(progress) => {
+                PartialRenderMessage::Progress(progress) => {
                     if progress >= 1.0 {
                         break;
                     }
                 }
-                PartialRenderMessage::PixelsTodo(data) => {
+                PartialRenderMessage::PixelData(data) => {
                     let mut locked_renderer = renderer.lock().unwrap();
 
                     for pixel in &*data.pixel_data {

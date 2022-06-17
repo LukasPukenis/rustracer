@@ -18,7 +18,7 @@ impl Sphere {
     }
 }
 
-const THRESHOLD: f64 = 0.001; //0.001;
+const THRESHOLD: f64 = 0.001;
 
 impl Hitable for Sphere {
     fn get_random_point(&self) -> Vec3 {
@@ -49,7 +49,7 @@ impl Hitable for Sphere {
             }
 
             let point = r.at(solution);
-            let mut normal = (point - self.pos) / self.radius; // todo: same as .unit() ?
+            let mut normal = (point - self.pos) / self.radius;
             let face: Face;
 
             if normal.dot(&r.dir) > 0.0 {
