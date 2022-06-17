@@ -28,7 +28,7 @@ impl Renderer {
     pub fn putpixel(&mut self, x: u32, y: u32, color: Color) {
         let base = ((y * self.width + x) * 4) as usize;
 
-        fn gamma(i: f64) -> f64 {
+        fn gamma(i: f32) -> f32 {
             i.sqrt()
         }
 

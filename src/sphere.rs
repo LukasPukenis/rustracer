@@ -4,21 +4,21 @@ use crate::scene::CollisionData;
 use crate::scene::Face;
 use crate::scene::Hitable;
 
-use crate::vec3::Vec3;
+use glam::Vec3;
 
 #[derive(Copy, Clone)]
 pub struct Sphere {
     pub pos: Vec3,
-    pub radius: f64,
+    pub radius: f32,
 }
 
 impl Sphere {
-    pub fn new(pos: Vec3, radius: f64) -> Sphere {
+    pub fn new(pos: Vec3, radius: f32) -> Sphere {
         Sphere { pos, radius }
     }
 }
 
-const THRESHOLD: f64 = 0.001;
+const THRESHOLD: f32 = 0.001;
 
 impl Hitable for Sphere {
     fn get_random_point(&self) -> Vec3 {
@@ -35,9 +35,9 @@ impl Hitable for Sphere {
 
     fn hit(&self, r: &Ray) -> Option<CollisionData> {
         let oc = r.origin - self.pos;
-        let a = r.dir.dot(&r.dir);
-        let b = 2.0 * oc.dot(&r.dir);
-        let c = oc.dot(&oc) - self.radius.powi(2);
+        let a = r.dir.dot(r.dir);
+        let b = 2.0 * oc.dot(r.dir);
+        let c = oc.dot(oc) - self.radius.powi(2);
         let discriminant = b * b - 4.0 * a * c;
         if discriminant < 0.0 {
             None
@@ -48,13 +48,13 @@ impl Hitable for Sphere {
                 return None;
             }
 
-            let point = r.at(solution);
+            let point = r.at(solution as f32);
             let mut normal = (point - self.pos) / self.radius;
             let face: Face;
 
-            if normal.dot(&r.dir) > 0.0 {
+            if normal.dot(r.dir) > 0.0 {
                 face = Face::Back;
-                normal = normal.neg();
+                normal = -normal;
             } else {
                 face = Face::Front;
             }

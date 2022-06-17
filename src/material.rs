@@ -1,17 +1,17 @@
-use crate::vec3::Vec3;
+use glam::Vec3;
 
 use std::ops;
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct Color {
-    pub r: f64,
-    pub g: f64,
-    pub b: f64,
+    pub r: f32,
+    pub g: f32,
+    pub b: f32,
 }
 
 impl Into<Vec3> for Color {
     fn into(self) -> Vec3 {
-        Vec3::new_with(self.r, self.g, self.b)
+        Vec3::new(self.r, self.g, self.b)
     }
 }
 
@@ -69,10 +69,10 @@ impl ops::Div<Color> for Color {
     }
 }
 
-impl ops::Mul<f64> for Color {
+impl ops::Mul<f32> for Color {
     type Output = Color;
 
-    fn mul(self, k: f64) -> Color {
+    fn mul(self, k: f32) -> Color {
         Color {
             r: self.r * k,
             g: self.g * k,
@@ -81,10 +81,10 @@ impl ops::Mul<f64> for Color {
     }
 }
 
-impl ops::Div<f64> for Color {
+impl ops::Div<f32> for Color {
     type Output = Color;
 
-    fn div(self, k: f64) -> Color {
+    fn div(self, k: f32) -> Color {
         Color {
             r: self.r / k,
             g: self.g / k,
@@ -94,7 +94,7 @@ impl ops::Div<f64> for Color {
 }
 
 impl Color {
-    pub fn new(r: f64, g: f64, b: f64) -> Color {
+    pub fn new(r: f32, g: f32, b: f32) -> Color {
         Color { r, g, b }
     }
 
@@ -118,20 +118,20 @@ pub enum Material {
 #[derive(Copy, Clone, Debug)]
 pub struct Metal {
     pub color: Color,
-    pub fuzz: f64,
-    pub albedo: f64,
+    pub fuzz: f32,
+    pub albedo: f32,
 }
 
 // has a color and refraction index by how much to bend the light
 #[derive(Copy, Clone, Debug)]
 pub struct Dielectric {
     pub color: Color,
-    pub refraction: f64,
+    pub refraction: f32,
 }
 
 // has a color and albedo which means how much of light it "eats". 0 means - only it's color will be visible
 #[derive(Copy, Clone, Debug)]
 pub struct Lambertian {
     pub color: Color,
-    pub albedo: f64,
+    pub albedo: f32,
 }

@@ -8,7 +8,7 @@ use crate::ray::Ray;
 use crate::app;
 use crate::loader;
 use crate::material::Color;
-use crate::vec3::Vec3;
+use glam::Vec3;
 use rand::prelude::*;
 use std::sync::mpsc;
 use std::sync::Arc;
@@ -21,9 +21,9 @@ pub trait RenderCallbacks {
     fn progress(&mut self, v: f32);
 }
 
-const AMBIENT_R: f64 = 0.0;
-const AMBIENT_G: f64 = 0.0;
-const AMBIENT_B: f64 = 0.0;
+const AMBIENT_R: f32 = 0.0;
+const AMBIENT_G: f32 = 0.0;
+const AMBIENT_B: f32 = 0.0;
 
 pub struct Pixel {
     pub x: u64,
@@ -101,10 +101,10 @@ pub fn random_point_in_circle() -> Vec3 {
     let mut rng = rand::thread_rng();
 
     loop {
-        let x: f64 = 1.0 - rng.gen::<f64>() * 2.0;
-        let y: f64 = 1.0 - rng.gen::<f64>() * 2.0;
-        let z: f64 = 1.0 - rng.gen::<f64>() * 2.0;
-        let v = Vec3::new_with(x, y, z);
+        let x: f32 = 1.0 - rng.gen::<f32>() * 2.0;
+        let y: f32 = 1.0 - rng.gen::<f32>() * 2.0;
+        let z: f32 = 1.0 - rng.gen::<f32>() * 2.0;
+        let v = Vec3::new(x, y, z);
 
         if v.length_squared() >= 1.0 {
             continue;
@@ -132,8 +132,8 @@ fn render_block(
     let viewport_height = 2.0 * h;
     let viewport_width = aspect * viewport_height as f64;
 
-    let horizontal = Vec3::new_with(viewport_width as f64, 0.0, 0.0);
-    let vertical = Vec3::new_with(0.0, viewport_height as f64, 0.0);
+    let horizontal = Vec3::new(viewport_width as f32, 0.0, 0.0);
+    let vertical = Vec3::new(0.0, viewport_height as f32, 0.0);
     let origin = camera.pos;
     let lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - camera.dir;
 
@@ -143,21 +143,21 @@ fn render_block(
             let mut rng = rand::thread_rng();
 
             for _ in 0..settings.samples {
-                let xoff: f64 = 1.0 - (2.0 * rng.gen::<f64>());
-                let yoff: f64 = 1.0 - (2.0 * rng.gen::<f64>());
+                let xoff: f32 = 1.0 - (2.0 * rng.gen::<f32>());
+                let yoff: f32 = 1.0 - (2.0 * rng.gen::<f32>());
 
-                let u = (i as f64 + xoff) / ((scnwidth - 1) as f64);
-                let v = (j as f64 + yoff) / ((scnheight - 1) as f64);
+                let u = (i as f32 + xoff) / ((scnwidth - 1) as f32);
+                let v = (j as f32 + yoff) / ((scnheight - 1) as f32);
                 let r = Ray::new(
                     origin,
-                    lower_left_corner + horizontal * u as f64 + vertical * v as f64 - origin,
+                    lower_left_corner + horizontal * u as f32 + vertical * v as f32 - origin,
                 );
 
                 let color = ray_color(&r, &scene.clone(), 100, settings.shadow_samples);
                 final_color = final_color + color;
             }
 
-            final_color = final_color / settings.samples as f64;
+            final_color = final_color / settings.samples as f32;
             final_color.r = final_color.r.clamp(0.0, 1.0);
             final_color.g = final_color.g.clamp(0.0, 1.0);
             final_color.b = final_color.b.clamp(0.0, 1.0);
@@ -186,10 +186,10 @@ pub fn draw(
     let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8 // todo: show focal length and angle in gui
     let h = (theta / 2.0).tan();
     let viewport_height = 2.0 * h;
-    let viewport_width = aspect * viewport_height as f64;
+    let viewport_width = aspect * viewport_height as f32;
 
-    let horizontal = Vec3::new_with(viewport_width as f64, 0.0, 0.0);
-    let vertical = Vec3::new_with(0.0, viewport_height as f64, 0.0);
+    let horizontal = Vec3::new(viewport_width as f32, 0.0, 0.0);
+    let vertical = Vec3::new(0.0, viewport_height as f32, 0.0);
     let origin = camera.pos;
     let _lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - camera.dir;
 
@@ -283,7 +283,7 @@ pub fn draw(
 fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
     let mut closest_obj: Option<Object> = None;
     let mut closest_data: Option<CollisionData> = None;
-    let mut closest_distance: f64 = 99999999999.9;
+    let mut closest_distance: f32 = 99999999999.9;
 
     for obj in scn.objects.iter() {
         match obj.geometry.hit(r) {
@@ -340,7 +340,7 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                     let collision_point = collision_data.0.point;
                     let collision_normal = collision_data.0.normal;
 
-                    let mut color = Vec3::new();
+                    let mut color = Vec3::new(0.0, 0.0, 0.0);
 
                     match collision_data.1.mat {
                         material::Material::Lambertian(m) => {
@@ -366,7 +366,7 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                     // all the light sources in the scene and light the pixel accordingly
                     // we do not care about light's color at the moment
 
-                    let mut intensities: Vec<f64> = Vec::new();
+                    let mut intensities: Vec<f32> = Vec::new();
                     for light in scn.lights() {
                         let mut collisions = 0;
 
@@ -393,15 +393,15 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                         });
 
                         let n = light.geometry.pos();
-                        let m = collision_normal.clone().unit();
-                        let dot = m.dot(&n).clamp(0.0, 1.0);
+                        let m = collision_normal.clone().normalize();
+                        let dot = m.dot(n).clamp(0.0, 1.0) as f32;
 
-                        let intense = collisions as f64 / rays_cnt as f64;
+                        let intense = collisions as f32 / rays_cnt as f32;
                         intensities.push(dot * intense);
                     }
 
                     let light_intensity =
-                        intensities.iter().sum::<f64>() / intensities.len() as f64;
+                        intensities.iter().sum::<f32>() / intensities.len() as f32;
 
                     match collision_data.1.mat {
                         material::Material::Lambertian(m) => {
@@ -409,16 +409,16 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                         }
 
                         material::Material::Metal(m) => {
-                            let norm = collision_data.0.normal.clone().unit();
-                            let reflected_dir =
-                                r.dir.reflect(&norm).unit() + random_point_in_circle() * m.fuzz;
+                            let norm = collision_data.0.normal.clone().normalize();
+                            let reflected_dir = reflect(&r.dir, &norm).normalize()
+                                + random_point_in_circle() * m.fuzz;
 
                             // todo: without this metallic material produces borders with the color of whats behind
-                            if norm.dot(&r.dir) > -0.60 {
+                            if norm.dot(r.dir) > -0.60 {
                                 return (color * light_intensity).into();
                             }
                             let reflected_ray =
-                                Ray::new(collision_data.0.point, reflected_dir.clone().unit());
+                                Ray::new(collision_data.0.point, reflected_dir.clone().normalize());
 
                             let rcol: Vec3 =
                                 ray_color(&reflected_ray, &scn, depth - 1, shadow_samples).into();
@@ -533,10 +533,28 @@ fn get_bboxes_for(w: i32, h: i32, subdivisions: i32) -> Vec<BBox> {
 
     bboxes
 }
+
+/*
+    reflect vector around the normal and return a new vector.
+    This can be explained as this using a paper and a pencil:
+    - draw incoming, normal and reflected vectors
+    - reposition the original vector to start at the center,
+    this doesn't change a thing however it reveals that the reflected vector
+    is original vector plus the vector going upwards to reflected vector. This
+    vector is actually made out of two identical vectors and we need to find those.
+    - to find that vector we can do a dot product of normal and original vector
+    then multiply by the unit normal vector and we will receive a new vector
+    that's in the same direction as normal but with magnitude of projection of
+    incoming vector on the normal one. Multiply it by two and we have our mystery vector.
+    - take the resulting vector which is 2*dot(V,N)*N and add it to the original vector
+*/
+pub fn reflect(v: &glam::Vec3, normal: &glam::Vec3) -> glam::Vec3 {
+    *v - (*normal * 2.0 * v.dot(*normal))
+}
+
 #[cfg(test)]
 mod tests {
     use super::get_bboxes_for;
-    use super::BBox;
 
     #[test]
     fn test_bbox_generator4() {

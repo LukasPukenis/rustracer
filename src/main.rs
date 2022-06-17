@@ -8,8 +8,8 @@ mod ray;
 mod renderer;
 mod scene;
 mod sphere;
-mod vec3;
 
+use glam::Vec3;
 use std::sync::Arc;
 use std::sync::Mutex;
 
@@ -59,8 +59,8 @@ fn main() {
     let start = SystemTime::now();
     let renderer = Arc::new(Mutex::new(renderer::Renderer::new(width, height)));
     let camera = camera::Camera::new(
-        vec3::Vec3::new_with(0.0, 0.0, 1.0), // pos
-        vec3::Vec3::new_with(0.0, 0.0, 1.0), // dir
+        Vec3::new(0.0, 0.0, 1.0), // pos
+        Vec3::new(0.0, 0.0, 1.0), // dir
         60.0,
     );
 
