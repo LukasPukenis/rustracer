@@ -1,3 +1,4 @@
+use crate::app::PartialRenderMessagePixels;
 use crate::camera::Camera;
 
 use crate::material;
@@ -9,7 +10,6 @@ use crate::loader;
 use crate::material::Color;
 use crate::vec3::Vec3;
 use rand::prelude::*;
-
 use std::sync::mpsc;
 use std::sync::Arc;
 use std::sync::Mutex;
@@ -123,6 +123,7 @@ fn renderBlock(
     camera: Camera,
     settings: app::Settings,
     bbox: BBox,
+    tx: mpsc::Sender<f64>,
 ) -> Vec<Pixel> {
     let mut pixels = Vec::new();
 
@@ -158,7 +159,7 @@ fn renderBlock(
                 );
 
                 // todo: spaghetti
-                let color = ray_color(&r, &scene.clone(), 100);
+                let color = ray_color(&r, &scene.clone(), 100, settings.shadow_samples);
                 final_color = final_color + color;
             }
 
@@ -175,6 +176,9 @@ fn renderBlock(
         }
     }
 
+    // todo:
+    tx.send(1.0).unwrap();
+
     pixels
 }
 
@@ -182,7 +186,6 @@ fn renderBlock(
 pub fn draw(
     scene: Arc<Scene>,
     camera: Camera,
-    _progress_channel: mpsc::Sender<f32>,
     settings: app::Settings,
     tx: mpsc::Sender<PartialRenderMessage>,
 ) {
@@ -215,35 +218,61 @@ pub fn draw(
     let progress = Arc::new(Mutex::new(0));
 
     let bboxes_len = bboxes.len();
-
+    let progress_ratio = 1.0 / bboxes_len as f64;
     println!("{} bboxes for {} threads", bboxes_len, settings.threads);
+
+    let (progtx, progrx) = mpsc::channel();
+
+    let mut total_progress = Arc::new(Mutex::new(0.0));
+
+    let tx_clone3 = tx.clone();
+    std::thread::spawn(move || loop {
+        match progrx.try_recv() {
+            Ok(p) => {
+                let progress = *total_progress.lock().unwrap() + p * progress_ratio;
+                println!("progress: {}", progress);
+                *total_progress.lock().unwrap() = progress;
+
+                tx_clone3
+                    .send(PartialRenderMessage::progress_todo {
+                        0: *total_progress.lock().unwrap(),
+                    })
+                    .unwrap();
+
+                if *total_progress.lock().unwrap() >= 1.0 {
+                    break;
+                }
+            }
+            Err(_) => {} // todo
+        }
+    });
+
     for bbox in bboxes {
         let scene_clone = scene.clone();
-        let tx_clone = tx.clone();
+        let tx_clone1 = tx.clone();
+        let tx_clone2 = tx.clone();
 
         let progress_clone = progress.clone();
 
+        let progtx = progtx.clone();
         pool.execute(move || {
-            let pixels = renderBlock(scene_clone, camera, settings, bbox);
+            let pixels = renderBlock(scene_clone, camera, settings, bbox, progtx);
             *progress_clone.lock().unwrap() += 1; // todo
 
-            let p = *progress_clone.lock().unwrap() as f32 / bboxes_len as f32;
+            // let p = *progress_clone.lock().unwrap() as f32 / bboxes_len as f32;
 
-            tx_clone
-                .send(PartialRenderMessage::new(Arc::new(pixels), bbox, p))
+            tx_clone2
+                .send(PartialRenderMessage::pixels_todo {
+                    0: PartialRenderMessagePixels {
+                        pixel_data: Arc::new(pixels),
+                        bbox: bbox,
+                    },
+                })
                 .unwrap();
         });
-
-        // handles.push(h);
     }
 
     pool.join();
-
-    // let l = handles.len();
-    // for h in handles {
-    //     // todo: progress
-    //     h.join().unwrap();
-    // }
 }
 
 fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
@@ -271,7 +300,6 @@ fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
             Some(data) => {
                 let distance = (r.origin - data.point).length();
                 if distance < closest_distance {
-                    // println!("distance2 check from {} to {}", closest_distance, distance);
                     closest_obj = Some(light.clone());
                     closest_data = Some(data);
                     closest_distance = distance;
@@ -281,10 +309,7 @@ fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
     }
 
     match closest_obj {
-        Some(obj) => {
-            // println!("{}", closest_distance);
-            Some((closest_data.unwrap(), obj))
-        }
+        Some(obj) => Some((closest_data.unwrap(), obj)),
         None => None,
     }
 }
@@ -297,7 +322,7 @@ fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
  */
 
 // todo: Vec3->Color
-fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Color {
+fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
     if depth <= 0 {
         return Color::default();
     }
@@ -345,7 +370,7 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Color {
                         let mut collisions = 0;
 
                         // todo: should come from settings maybe?
-                        let rays_cnt = 50;
+                        let rays_cnt = shadow_samples;
                         let ll = light.clone();
 
                         let rays = (0..rays_cnt).into_iter().map(|_| {
@@ -394,7 +419,8 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16) -> Color {
                             let reflected_ray =
                                 Ray::new(collision_data.0.point, reflected_dir.clone().unit());
 
-                            let rcol: Vec3 = ray_color(&reflected_ray, &scn, depth - 1).into();
+                            let rcol: Vec3 =
+                                ray_color(&reflected_ray, &scn, depth - 1, shadow_samples).into();
                             return (color * light_intensity * m.albedo + rcol * m.albedo).into();
                         }
                         material::Material::Dielectric(_m) => {

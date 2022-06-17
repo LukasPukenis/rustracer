@@ -10,9 +10,10 @@ use crate::renderer;
 use crate::scene;
 use std::sync::mpsc;
 use std::sync::mpsc::{Receiver, Sender};
+use std::sync::Mutex;
 
 use std::sync::Arc;
-
+use std::thread;
 
 #[derive(PartialEq, Debug, Copy, Clone)]
 pub struct BBox {
@@ -28,26 +29,13 @@ impl BBox {
     }
 }
 
-pub struct PartialRenderMessage {
-    pixel_data: Arc<Vec<scene::Pixel>>,
-    bbox: BBox,
-    progress: f32,
+pub enum PartialRenderMessage {
+    pixels_todo(PartialRenderMessagePixels),
+    progress_todo(f64),
 }
-
-impl PartialRenderMessage {
-    pub fn new(
-        pixel_data: Arc<Vec<scene::Pixel>>,
-        bbox: BBox,
-        progress: f32,
-    ) -> PartialRenderMessage {
-        assert_eq!(pixel_data.len(), (bbox.w * bbox.h) as usize);
-
-        PartialRenderMessage {
-            pixel_data,
-            bbox,
-            progress,
-        }
-    }
+pub struct PartialRenderMessagePixels {
+    pub pixel_data: Arc<Vec<scene::Pixel>>,
+    pub bbox: BBox,
 }
 
 #[derive(Copy, Clone)]
@@ -59,14 +47,19 @@ pub struct Settings {
     // how many blocks to split the scene to. ideally should map to N*threads but parts might be more complex
     // for some thread. Todo: do something for that
     pub bboxes: usize,
+
+    // soft shadows are produced by throwing rays into the light source and averaging how many hit it
+    // the more rays - the better quality of a shadow
+    pub shadow_samples: u32,
 }
 
 impl Settings {
-    pub fn new(samples: u32, threads: usize, bboxes: usize) -> Settings {
+    pub fn new(samples: u32, threads: usize, bboxes: usize, shadow_samples: u32) -> Settings {
         Settings {
             samples,
             threads,
             bboxes,
+            shadow_samples,
         }
     }
 }
@@ -76,12 +69,13 @@ impl Default for Settings {
             samples: 1,
             threads: 1,
             bboxes: 1,
+            shadow_samples: 1,
         }
     }
 }
 
 pub fn render(
-    renderer: &mut renderer::Renderer,
+    renderer: Arc<Mutex<renderer::Renderer>>,
     camera: camera::Camera,
     scene: Arc<Scene>,
     _width: u32,
@@ -89,22 +83,30 @@ pub fn render(
     settings: Settings,
 ) {
     let (tx, rx): (Sender<PartialRenderMessage>, Receiver<PartialRenderMessage>) = mpsc::channel();
-    let (progtx, _progrx) = mpsc::channel();
 
-    scene::draw(scene, camera, progtx, settings, tx);
-    loop {
+    let h = thread::spawn(move || loop {
         match rx.try_recv() {
-            Ok(data) => {
-                // todo: locking
-                for pixel in &*data.pixel_data {
-                    renderer.putpixel(pixel.x as u32, pixel.y as u32, pixel.color);
+            Ok(data) => match data {
+                PartialRenderMessage::progress_todo(progress) => {
+                    if progress >= 1.0 {
+                        break;
+                    }
                 }
-                println!("progress: {}", data.progress);
-                if data.progress >= 1.0 {
-                    break;
+                PartialRenderMessage::pixels_todo(data) => {
+                    let mut locked_renderer = renderer.lock().unwrap();
+
+                    for pixel in &*data.pixel_data {
+                        locked_renderer.putpixel(pixel.x as u32, pixel.y as u32, pixel.color);
+                    }
                 }
+            },
+            Err(_e) => {
+                thread::yield_now();
             }
-            Err(_e) => {}
         }
-    }
+    });
+
+    scene::draw(scene, camera, settings, tx);
+
+    h.join().unwrap();
 }

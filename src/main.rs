@@ -12,6 +12,7 @@ mod support;
 mod vec3;
 
 use std::sync::Arc;
+use std::sync::Mutex;
 
 use std::time::SystemTime;
 
@@ -29,6 +30,15 @@ struct Args {
 
     #[clap(short, long)]
     scene: String,
+
+    #[clap(short, long)]
+    per_pixel_samples: u32,
+
+    #[clap(short, long)]
+    shadow_samples: u32,
+
+    #[clap(short, long)]
+    threads: usize,
 }
 
 fn main() {
@@ -48,7 +58,7 @@ fn main() {
     }
 
     let start = SystemTime::now();
-    let mut renderer = renderer::Renderer::new(width, height);
+    let renderer = Arc::new(Mutex::new(renderer::Renderer::new(width, height)));
     let camera = camera::Camera::new(
         vec3::Vec3::new_with(0.0, 0.0, 1.0), // pos
         vec3::Vec3::new_with(0.0, 0.0, 1.0), // dir
@@ -56,10 +66,15 @@ fn main() {
     );
 
     // let settings = app::Settings::new(1, 4, 16);
-    let settings = app::Settings::new(32, 8, 16);
+    let settings = app::Settings::new(
+        args.per_pixel_samples,
+        args.threads,
+        8, // todo:
+        args.shadow_samples,
+    );
 
     app::render(
-        &mut renderer,
+        renderer.clone(),
         camera,
         Arc::new(scene),
         width,
@@ -69,6 +84,6 @@ fn main() {
     let elapsed = start.elapsed().unwrap();
 
     println!("Rendering took {}ms", elapsed.as_millis());
-    renderer.save(&args.output);
+    renderer.lock().unwrap().save(&args.output);
     println!("Saved at {}", args.output);
 }
