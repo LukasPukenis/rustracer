@@ -1,6 +1,8 @@
+use crate::camera::Camera;
 use crate::material;
 use crate::scene::Hitable;
 use crate::sphere::Sphere;
+
 use glam::Vec3;
 use serde_json::Value;
 use std::fs;
@@ -12,17 +14,42 @@ pub enum Kind {
     Light,
 }
 
-pub fn load(path: &str) -> Vec<(Arc<dyn Hitable>, material::Material, Kind)> {
+pub fn load(path: &str) -> (Vec<(Arc<dyn Hitable>, material::Material, Kind)>, Camera) {
     let contents = fs::read_to_string(path).expect("file not found");
     let j: Value = serde_json::from_str(&contents).unwrap();
     let mut results = Vec::new();
 
+    let mut camera: Option<Camera> = None;
+
     for item in j.as_array().unwrap() {
-        let obj = build_object_from_string(item);
-        results.push(obj);
+        match item["type"].as_str().unwrap() {
+            "camera" => {
+                camera = Some(build_camera(item));
+            }
+            _ => {
+                let obj = build_object_from_string(item);
+                results.push(obj);
+            }
+        }
     }
 
-    results
+    (results, camera.unwrap())
+}
+
+fn build_camera(s: &Value) -> Camera {
+    let pos = Vec3::new(
+        s["pos"]["x"].as_f64().unwrap() as f32,
+        s["pos"]["y"].as_f64().unwrap() as f32,
+        s["pos"]["z"].as_f64().unwrap() as f32,
+    );
+    let lookat = Vec3::new(
+        s["lookat"]["x"].as_f64().unwrap() as f32,
+        s["lookat"]["y"].as_f64().unwrap() as f32,
+        s["lookat"]["z"].as_f64().unwrap() as f32,
+    );
+    let fov = s["fov"].as_f64().unwrap() as f32;
+
+    Camera::new(pos, lookat, fov)
 }
 
 fn panic_on_range(x: f32) {

@@ -47,7 +47,7 @@ fn main() {
 
     let mut scene = scene::Scene::new(width as u64, height as u64);
 
-    let objects = loader::load(&args.scene);
+    let (objects, camera) = loader::load(&args.scene);
 
     for obj in objects {
         match obj.2 {
@@ -58,11 +58,6 @@ fn main() {
 
     let start = SystemTime::now();
     let renderer = Arc::new(Mutex::new(renderer::Renderer::new(width, height)));
-    let camera = camera::Camera::new(
-        Vec3::new(0.0, 0.0, 1.0), // pos
-        Vec3::new(0.0, 0.0, 1.0), // dir
-        60.0,
-    );
 
     // let settings = app::Settings::new(1, 4, 16);
     let settings = app::Settings::new(

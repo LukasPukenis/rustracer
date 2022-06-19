@@ -130,12 +130,17 @@ fn render_block(
     let theta = (camera.fov).to_radians(); // 50mm ff -> 46.8
     let h = (theta / 2.0).tan();
     let viewport_height = 2.0 * h;
-    let viewport_width = aspect * viewport_height as f64;
+    let viewport_width = aspect * viewport_height as f32;
 
-    let horizontal = Vec3::new(viewport_width as f32, 0.0, 0.0);
-    let vertical = Vec3::new(0.0, viewport_height as f32, 0.0);
+    let vup = Vec3::new(0.0, 1.0, 0.0);
+    let w = (camera.pos - camera.lookat).normalize();
+    let u = w.cross(vup).normalize();
+    let v = w.cross(u);
+
     let origin = camera.pos;
-    let lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - camera.dir;
+    let horizontal = viewport_width * u;
+    let vertical = viewport_height * v;
+    let lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - w;
 
     for j in bbox.x..(bbox.x + bbox.w) {
         for i in bbox.y..(bbox.y + bbox.h) {
@@ -191,7 +196,7 @@ pub fn draw(
     let horizontal = Vec3::new(viewport_width as f32, 0.0, 0.0);
     let vertical = Vec3::new(0.0, viewport_height as f32, 0.0);
     let origin = camera.pos;
-    let _lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - camera.dir;
+    // let _lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - camera.dir;
 
     let scnheight = scene.height;
     let scnwidth = scene.width;
@@ -270,7 +275,7 @@ pub fn draw(
                 .send(PartialRenderMessage::PixelData {
                     0: PartialRenderMessagePixels {
                         pixel_data: Arc::new(pixels),
-                        bbox: bbox,
+                        bbox,
                     },
                 })
                 .unwrap();
@@ -280,7 +285,7 @@ pub fn draw(
     pool.join();
 }
 
-fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
+fn collide(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
     let mut closest_obj: Option<Object> = None;
     let mut closest_data: Option<CollisionData> = None;
     let mut closest_distance: f32 = 99999999999.9;
@@ -313,10 +318,7 @@ fn collide<'a>(r: &Ray, scn: &Scene) -> Option<(CollisionData, Object)> {
         }
     }
 
-    match closest_obj {
-        Some(obj) => Some((closest_data.unwrap(), obj)),
-        None => None,
-    }
+    closest_obj.map(|obj| (closest_data.unwrap(), obj))
 }
 
 /**
@@ -329,7 +331,7 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
         return Color::default();
     }
 
-    match collide(r, &scn) {
+    match collide(r, scn) {
         Some(collision_data) => {
             let _mat = collision_data.1.mat;
 
@@ -381,7 +383,7 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                             )
                         });
 
-                        rays.for_each(|r| match collide(&r, &scn) {
+                        rays.for_each(|r| match collide(&r, scn) {
                             None => {}
                             Some(shadow_coll) => match shadow_coll.1.kind {
                                 // todo: check if it's the same light source
@@ -393,7 +395,7 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                         });
 
                         let n = light.geometry.pos();
-                        let m = collision_normal.clone().normalize();
+                        let m = collision_normal.normalize();
                         let dot = m.dot(n).clamp(0.0, 1.0) as f32;
 
                         let intense = collisions as f32 / rays_cnt as f32;
@@ -409,7 +411,7 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                         }
 
                         material::Material::Metal(m) => {
-                            let norm = collision_data.0.normal.clone().normalize();
+                            let norm = collision_data.0.normal.normalize();
                             let reflected_dir = reflect(&r.dir, &norm).normalize()
                                 + random_point_in_circle() * m.fuzz;
 
@@ -418,10 +420,10 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                                 return (color * light_intensity).into();
                             }
                             let reflected_ray =
-                                Ray::new(collision_data.0.point, reflected_dir.clone().normalize());
+                                Ray::new(collision_data.0.point, reflected_dir.normalize());
 
                             let rcol: Vec3 =
-                                ray_color(&reflected_ray, &scn, depth - 1, shadow_samples).into();
+                                ray_color(&reflected_ray, scn, depth - 1, shadow_samples).into();
                             return (color * light_intensity * m.albedo + rcol * m.albedo).into();
                         }
                         material::Material::Dielectric(_m) => {
