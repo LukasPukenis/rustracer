@@ -29,16 +29,7 @@
                 "g": 1.0,
                 "b": 1.0
             }
-        },
-        "animations": [
-            {
-                "prop": "y",
-                "from": -0.2,
-                "to": 0.2,
-                "time": 4.0,
-                "ease": "linear"
-            }
-        ]
+        }
     },
     {
         "type": "point_light",
@@ -56,16 +47,7 @@
                 "g": 1.0,
                 "b": 1.0
             }
-        },
-        "animations": [
-            {
-                "prop": "y",
-                "from": 0.2,
-                "to": -0.2,
-                "time": 4.0,
-                "ease": "linear"
-            }
-        ]
+        }
     },
     {
         "type": "sphere",
