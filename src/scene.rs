@@ -415,10 +415,6 @@ fn ray_color(r: &Ray, scn: &Scene, depth: i16, shadow_samples: u32) -> Color {
                             let reflected_dir = reflect(&r.dir, &norm).normalize()
                                 + random_point_in_circle() * m.fuzz;
 
-                            // todo: without this metallic material produces borders with the color of whats behind
-                            if norm.dot(r.dir) > -0.60 {
-                                return (color * light_intensity).into();
-                            }
                             let reflected_ray =
                                 Ray::new(collision_data.0.point, reflected_dir.normalize());
 

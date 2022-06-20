@@ -4,23 +4,41 @@
         "pos": {
             "x": 0.0,
             "y": -3.0,
-            "z": 1.0
+            "z": 1.4
         },
         "lookat": {
             "x": 0.0,
             "y": 0.0,
-            "z": 0.5
+            "z": 0.15
         },
         "fov": 60.0
     },
     {
         "type": "point_light",
         "pos": {
-            "x": 12.0,
-            "y": 0.2,
+            "x": -20.0,
+            "y": 10.0,
             "z": 8.0
         },
-        "radius": 2.5,
+        "radius": 5.5,
+        "material": {
+            "type": "lambertian",
+            "albedo": 0.0,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0
+            }
+        }
+    },
+    {
+        "type": "point_light",
+        "pos": {
+            "x": 20.0,
+            "y": 10.0,
+            "z": 8.0
+        },
+        "radius": 5.5,
         "material": {
             "type": "lambertian",
             "albedo": 0.0,
@@ -42,7 +60,7 @@
         "material": {
             "type": "metal",
             "fuzz": 0.0,
-            "albedo": 1.0,
+            "albedo": 0.8,
             "color": {
                 "r": 1.0,
                 "g": 0.0,
@@ -61,7 +79,7 @@
         "material": {
             "type": "metal",
             "fuzz": 0.0,
-            "albedo": 1.0,
+            "albedo": 0.8,
             "color": {
                 "r": 0.0,
                 "g": 1.0,
@@ -80,7 +98,7 @@
         "material": {
             "type": "metal",
             "fuzz": 0.0,
-            "albedo": 1.0,
+            "albedo": 0.8,
             "color": {
                 "r": 0.0,
                 "g": 0.0,
@@ -95,7 +113,7 @@
             "y": 0.0,
             "z": -50.0
         },
-        "radius": 49.6,
+        "radius": 49.58,
         "material": {
             "type": "lambertian",
             "albedo": 0.820,
