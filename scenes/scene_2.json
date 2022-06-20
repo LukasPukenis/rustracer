@@ -1,0 +1,4556 @@
+[
+        {
+            "type": "camera",
+            "pos": {
+                "x": 6.0,
+                "y": 6.4,
+                "z": 2.0
+            },
+            "lookat": {
+                "x": 5.0,
+                "y": 3.0,
+                "z": 7.0
+            },
+            "fov": 60.0
+        }
+    ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 2.5,
+                    "z": 0
+                },
+                "radius": 0.36250000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 3.0,
+                    "z": 1
+                },
+                "radius": 0.3025,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 1.5,
+                    "z": 2
+                },
+                "radius": 0.24000000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 4.0,
+                    "z": 3
+                },
+                "radius": 0.21250000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 3.0,
+                    "z": 4
+                },
+                "radius": 0.2925,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 1.5,
+                    "z": 5
+                },
+                "radius": 0.3425,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 5.0,
+                    "z": 6
+                },
+                "radius": 0.21750000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 5.0,
+                    "z": 7
+                },
+                "radius": 0.41500000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 3.0,
+                    "z": 8
+                },
+                "radius": 0.2575,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 4.5,
+                    "z": 9
+                },
+                "radius": 0.35250000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 2.5,
+                    "z": 10
+                },
+                "radius": 0.225,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 4.5,
+                    "z": 11
+                },
+                "radius": 0.4075,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 3.0,
+                    "z": 12
+                },
+                "radius": 0.3925,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 2.5,
+                    "z": 13
+                },
+                "radius": 0.3875,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0,
+                    "y": 5.0,
+                    "z": 14
+                },
+                "radius": 0.23750000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 0.5,
+                    "z": 0
+                },
+                "radius": 0.29500000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 0.5,
+                    "z": 1
+                },
+                "radius": 0.23750000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 1.5,
+                    "z": 2
+                },
+                "radius": 0.2875,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 1.5,
+                    "z": 3
+                },
+                "radius": 0.21250000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 3.5,
+                    "z": 4
+                },
+                "radius": 0.23,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 4.0,
+                    "z": 5
+                },
+                "radius": 0.32,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 5.0,
+                    "z": 6
+                },
+                "radius": 0.3875,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 3.5,
+                    "z": 7
+                },
+                "radius": 0.4275,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 4.5,
+                    "z": 8
+                },
+                "radius": 0.3175,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 4.5,
+                    "z": 9
+                },
+                "radius": 0.395,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 4.0,
+                    "z": 10
+                },
+                "radius": 0.31,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 3.5,
+                    "z": 11
+                },
+                "radius": 0.24000000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 0.5,
+                    "z": 12
+                },
+                "radius": 0.33,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 1.5,
+                    "z": 13
+                },
+                "radius": 0.365,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 1,
+                    "y": 4.5,
+                    "z": 14
+                },
+                "radius": 0.30000000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 5.0,
+                    "z": 0
+                },
+                "radius": 0.2325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 2.0,
+                    "z": 1
+                },
+                "radius": 0.28250000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 3.5,
+                    "z": 2
+                },
+                "radius": 0.395,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 2.5,
+                    "z": 3
+                },
+                "radius": 0.39,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 3.0,
+                    "z": 4
+                },
+                "radius": 0.315,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 1.5,
+                    "z": 5
+                },
+                "radius": 0.3875,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 2.0,
+                    "z": 6
+                },
+                "radius": 0.24000000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 2.0,
+                    "z": 7
+                },
+                "radius": 0.2625,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 3.5,
+                    "z": 8
+                },
+                "radius": 0.21750000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 1.5,
+                    "z": 9
+                },
+                "radius": 0.20500000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 1.5,
+                    "z": 10
+                },
+                "radius": 0.4125,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 2.0,
+                    "z": 11
+                },
+                "radius": 0.4475,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 4.0,
+                    "z": 12
+                },
+                "radius": 0.3175,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 1.5,
+                    "z": 13
+                },
+                "radius": 0.2975,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 2,
+                    "y": 0.5,
+                    "z": 14
+                },
+                "radius": 0.34,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 2.0,
+                    "z": 0
+                },
+                "radius": 0.23,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 3.5,
+                    "z": 1
+                },
+                "radius": 0.4325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 5.0,
+                    "z": 2
+                },
+                "radius": 0.2625,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 2.0,
+                    "z": 3
+                },
+                "radius": 0.4325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 4.5,
+                    "z": 4
+                },
+                "radius": 0.21250000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 4.5,
+                    "z": 5
+                },
+                "radius": 0.35750000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 2.0,
+                    "z": 6
+                },
+                "radius": 0.385,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 1.0,
+                    "z": 7
+                },
+                "radius": 0.29500000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 1.5,
+                    "z": 8
+                },
+                "radius": 0.23500000000000001,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 2.0,
+                    "z": 9
+                },
+                "radius": 0.36250000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 2.0,
+                    "z": 10
+                },
+                "radius": 0.4,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 3.5,
+                    "z": 11
+                },
+                "radius": 0.38,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 4.5,
+                    "z": 12
+                },
+                "radius": 0.4475,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 2.0,
+                    "z": 13
+                },
+                "radius": 0.4475,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 3,
+                    "y": 0.5,
+                    "z": 14
+                },
+                "radius": 0.275,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 4.0,
+                    "z": 0
+                },
+                "radius": 0.42500000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 1.0,
+                    "z": 1
+                },
+                "radius": 0.21000000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 2.5,
+                    "z": 2
+                },
+                "radius": 0.3275,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 4.0,
+                    "z": 3
+                },
+                "radius": 0.28250000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 0.5,
+                    "z": 4
+                },
+                "radius": 0.21500000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 2.5,
+                    "z": 5
+                },
+                "radius": 0.2475,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 4.5,
+                    "z": 6
+                },
+                "radius": 0.4475,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 2.0,
+                    "z": 7
+                },
+                "radius": 0.37,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 3.0,
+                    "z": 8
+                },
+                "radius": 0.4175,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 2.5,
+                    "z": 9
+                },
+                "radius": 0.275,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 2.5,
+                    "z": 10
+                },
+                "radius": 0.29000000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 1.0,
+                    "z": 11
+                },
+                "radius": 0.2475,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 0.5,
+                    "z": 12
+                },
+                "radius": 0.3325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 4.0,
+                    "z": 13
+                },
+                "radius": 0.2475,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 4,
+                    "y": 3.5,
+                    "z": 14
+                },
+                "radius": 0.4,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 4.5,
+                    "z": 0
+                },
+                "radius": 0.3325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 1.0,
+                    "z": 1
+                },
+                "radius": 0.3725,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 4.5,
+                    "z": 2
+                },
+                "radius": 0.36250000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 4.0,
+                    "z": 3
+                },
+                "radius": 0.225,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 4.5,
+                    "z": 4
+                },
+                "radius": 0.3725,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 0.5,
+                    "z": 5
+                },
+                "radius": 0.365,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 4.0,
+                    "z": 6
+                },
+                "radius": 0.30000000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 0.5,
+                    "z": 7
+                },
+                "radius": 0.35750000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 5.0,
+                    "z": 8
+                },
+                "radius": 0.365,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 3.5,
+                    "z": 9
+                },
+                "radius": 0.2325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 1.5,
+                    "z": 10
+                },
+                "radius": 0.3925,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 2.0,
+                    "z": 11
+                },
+                "radius": 0.23500000000000001,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 3.5,
+                    "z": 12
+                },
+                "radius": 0.30000000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 0.5,
+                    "z": 13
+                },
+                "radius": 0.355,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 5,
+                    "y": 1.0,
+                    "z": 14
+                },
+                "radius": 0.265,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 5.0,
+                    "z": 0
+                },
+                "radius": 0.385,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 3.0,
+                    "z": 1
+                },
+                "radius": 0.3825,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 1.5,
+                    "z": 2
+                },
+                "radius": 0.25,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 0.5,
+                    "z": 3
+                },
+                "radius": 0.21250000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 4.5,
+                    "z": 4
+                },
+                "radius": 0.4425,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 1.5,
+                    "z": 5
+                },
+                "radius": 0.4125,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 4.0,
+                    "z": 6
+                },
+                "radius": 0.4475,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 2.5,
+                    "z": 7
+                },
+                "radius": 0.41000000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 3.0,
+                    "z": 8
+                },
+                "radius": 0.3775,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 0.5,
+                    "z": 9
+                },
+                "radius": 0.405,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 3.5,
+                    "z": 10
+                },
+                "radius": 0.42500000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 3.5,
+                    "z": 11
+                },
+                "radius": 0.3775,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 4.5,
+                    "z": 12
+                },
+                "radius": 0.4125,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 2.0,
+                    "z": 13
+                },
+                "radius": 0.36,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 6,
+                    "y": 2.0,
+                    "z": 14
+                },
+                "radius": 0.32,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 2.5,
+                    "z": 0
+                },
+                "radius": 0.435,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 0.5,
+                    "z": 1
+                },
+                "radius": 0.265,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 4.0,
+                    "z": 2
+                },
+                "radius": 0.3925,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 4.5,
+                    "z": 3
+                },
+                "radius": 0.335,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 5.0,
+                    "z": 4
+                },
+                "radius": 0.2725,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 2.5,
+                    "z": 5
+                },
+                "radius": 0.41500000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 4.5,
+                    "z": 6
+                },
+                "radius": 0.23,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 3.5,
+                    "z": 7
+                },
+                "radius": 0.25,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 1.5,
+                    "z": 8
+                },
+                "radius": 0.3425,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 3.5,
+                    "z": 9
+                },
+                "radius": 0.28250000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 5.0,
+                    "z": 10
+                },
+                "radius": 0.3325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 1.5,
+                    "z": 11
+                },
+                "radius": 0.3275,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 5.0,
+                    "z": 12
+                },
+                "radius": 0.41500000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 4.0,
+                    "z": 13
+                },
+                "radius": 0.3725,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 7,
+                    "y": 5.0,
+                    "z": 14
+                },
+                "radius": 0.2025,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 5.0,
+                    "z": 0
+                },
+                "radius": 0.4325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 5.0,
+                    "z": 1
+                },
+                "radius": 0.35750000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 5.0,
+                    "z": 2
+                },
+                "radius": 0.45,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 3.0,
+                    "z": 3
+                },
+                "radius": 0.245,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 4.0,
+                    "z": 4
+                },
+                "radius": 0.28,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 4.5,
+                    "z": 5
+                },
+                "radius": 0.35250000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 4.0,
+                    "z": 6
+                },
+                "radius": 0.2925,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 4.0,
+                    "z": 7
+                },
+                "radius": 0.4075,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 3.5,
+                    "z": 8
+                },
+                "radius": 0.24000000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 4.5,
+                    "z": 9
+                },
+                "radius": 0.3825,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 4.0,
+                    "z": 10
+                },
+                "radius": 0.345,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 3.5,
+                    "z": 11
+                },
+                "radius": 0.3125,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 0.5,
+                    "z": 12
+                },
+                "radius": 0.23750000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 1.5,
+                    "z": 13
+                },
+                "radius": 0.36250000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 8,
+                    "y": 1.0,
+                    "z": 14
+                },
+                "radius": 0.4175,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 2.5,
+                    "z": 0
+                },
+                "radius": 0.21250000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 1.5,
+                    "z": 1
+                },
+                "radius": 0.4375,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 5.0,
+                    "z": 2
+                },
+                "radius": 0.2025,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 4.0,
+                    "z": 3
+                },
+                "radius": 0.44,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 4.0,
+                    "z": 4
+                },
+                "radius": 0.4425,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 2.0,
+                    "z": 5
+                },
+                "radius": 0.45,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 0.5,
+                    "z": 6
+                },
+                "radius": 0.4425,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 1.5,
+                    "z": 7
+                },
+                "radius": 0.4275,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 1.5,
+                    "z": 8
+                },
+                "radius": 0.4425,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 3.0,
+                    "z": 9
+                },
+                "radius": 0.35250000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 3.5,
+                    "z": 10
+                },
+                "radius": 0.29000000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 5.0,
+                    "z": 11
+                },
+                "radius": 0.4325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 2.0,
+                    "z": 12
+                },
+                "radius": 0.2225,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 4.0,
+                    "z": 13
+                },
+                "radius": 0.39,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 9,
+                    "y": 4.5,
+                    "z": 14
+                },
+                "radius": 0.3875,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 2.5,
+                    "z": 0
+                },
+                "radius": 0.36750000000000005,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 4.0,
+                    "z": 1
+                },
+                "radius": 0.20750000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 3.5,
+                    "z": 2
+                },
+                "radius": 0.445,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 4.0,
+                    "z": 3
+                },
+                "radius": 0.42000000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 4.5,
+                    "z": 4
+                },
+                "radius": 0.2575,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 2.0,
+                    "z": 5
+                },
+                "radius": 0.435,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 0.5,
+                    "z": 6
+                },
+                "radius": 0.38,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 1.5,
+                    "z": 7
+                },
+                "radius": 0.32,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 1.0,
+                    "z": 8
+                },
+                "radius": 0.28500000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 2.5,
+                    "z": 9
+                },
+                "radius": 0.28250000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 2.0,
+                    "z": 10
+                },
+                "radius": 0.3875,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 4.0,
+                    "z": 11
+                },
+                "radius": 0.35,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 2.0,
+                    "z": 12
+                },
+                "radius": 0.4325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 2.0,
+                    "z": 13
+                },
+                "radius": 0.4075,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 10,
+                    "y": 0.5,
+                    "z": 14
+                },
+                "radius": 0.4375,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 4.5,
+                    "z": 0
+                },
+                "radius": 0.33,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 1.0,
+                    "z": 1
+                },
+                "radius": 0.4,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 2.5,
+                    "z": 2
+                },
+                "radius": 0.4075,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 1.0,
+                    "z": 3
+                },
+                "radius": 0.28,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 3.0,
+                    "z": 4
+                },
+                "radius": 0.385,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 2.0,
+                    "z": 5
+                },
+                "radius": 0.3175,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 4.0,
+                    "z": 6
+                },
+                "radius": 0.245,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 3.5,
+                    "z": 7
+                },
+                "radius": 0.26,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 4.5,
+                    "z": 8
+                },
+                "radius": 0.3225,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 4.0,
+                    "z": 9
+                },
+                "radius": 0.39,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 3.5,
+                    "z": 10
+                },
+                "radius": 0.4025,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 2.5,
+                    "z": 11
+                },
+                "radius": 0.405,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 2.5,
+                    "z": 12
+                },
+                "radius": 0.44,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 2.5,
+                    "z": 13
+                },
+                "radius": 0.225,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 11,
+                    "y": 1.5,
+                    "z": 14
+                },
+                "radius": 0.36250000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 4.0,
+                    "z": 0
+                },
+                "radius": 0.405,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 2.0,
+                    "z": 1
+                },
+                "radius": 0.4125,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 2.0,
+                    "z": 2
+                },
+                "radius": 0.3425,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 1.5,
+                    "z": 3
+                },
+                "radius": 0.2525,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 5.0,
+                    "z": 4
+                },
+                "radius": 0.29000000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 4.0,
+                    "z": 5
+                },
+                "radius": 0.34750000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 2.0,
+                    "z": 6
+                },
+                "radius": 0.29500000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 4.5,
+                    "z": 7
+                },
+                "radius": 0.20500000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 3.0,
+                    "z": 8
+                },
+                "radius": 0.2575,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 5.0,
+                    "z": 9
+                },
+                "radius": 0.305,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 1.5,
+                    "z": 10
+                },
+                "radius": 0.20500000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 1.5,
+                    "z": 11
+                },
+                "radius": 0.36,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 3.0,
+                    "z": 12
+                },
+                "radius": 0.435,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 3.5,
+                    "z": 13
+                },
+                "radius": 0.4325,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 12,
+                    "y": 5.0,
+                    "z": 14
+                },
+                "radius": 0.42500000000000004,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 3.0,
+                    "z": 0
+                },
+                "radius": 0.2575,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 2.0,
+                    "z": 1
+                },
+                "radius": 0.31,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 1.5,
+                    "z": 2
+                },
+                "radius": 0.28250000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 5.0,
+                    "z": 3
+                },
+                "radius": 0.385,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 1.5,
+                    "z": 4
+                },
+                "radius": 0.4125,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 2.0,
+                    "z": 5
+                },
+                "radius": 0.26,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 5.0,
+                    "z": 6
+                },
+                "radius": 0.4,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 4.5,
+                    "z": 7
+                },
+                "radius": 0.34,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 5.0,
+                    "z": 8
+                },
+                "radius": 0.4025,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 0.5,
+                    "z": 9
+                },
+                "radius": 0.4225,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 1.0,
+                    "z": 10
+                },
+                "radius": 0.3375,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 3.0,
+                    "z": 11
+                },
+                "radius": 0.34750000000000003,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 1.5,
+                    "z": 12
+                },
+                "radius": 0.3225,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 0.5,
+                    "z": 13
+                },
+                "radius": 0.2275,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 13,
+                    "y": 5.0,
+                    "z": 14
+                },
+                "radius": 0.23,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 5.0,
+                    "z": 0
+                },
+                "radius": 0.28,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 4.5,
+                    "z": 1
+                },
+                "radius": 0.3975,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 3.0,
+                    "z": 2
+                },
+                "radius": 0.245,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 2.0,
+                    "z": 3
+                },
+                "radius": 0.37,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 1.5,
+                    "z": 4
+                },
+                "radius": 0.3925,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 4.0,
+                    "z": 5
+                },
+                "radius": 0.225,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 0.5,
+                    "z": 6
+                },
+                "radius": 0.3975,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 2.0,
+                    "z": 7
+                },
+                "radius": 0.395,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 2.5,
+                    "z": 8
+                },
+                "radius": 0.4175,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 3.0,
+                    "z": 9
+                },
+                "radius": 0.2475,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 0.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 1.5,
+                    "z": 10
+                },
+                "radius": 0.20500000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 2.0,
+                    "z": 11
+                },
+                "radius": 0.24000000000000002,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 0.5,
+                    "z": 12
+                },
+                "radius": 0.435,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 1.0,
+                        "g": 0.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 2.0,
+                    "z": 13
+                },
+                "radius": 0.2575,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 14,
+                    "y": 4.0,
+                    "z": 14
+                },
+                "radius": 0.4075,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.8,
+                    "color": {
+                        "r": 0.0,
+                        "g": 1.0,
+                        "b": 0.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "point_light",
+                "pos": {
+                    "x": 100,
+                    "y": 100,
+                    "z": 10
+                },
+                "radius": 40.0,
+                "material": {
+                    "type": "lambertian",
+                    "fuzz": 0.0,
+                    "albedo": 1.0,
+                    "color": {
+                        "r": 1.0,
+                        "g": 1.0,
+                        "b": 1.0
+                    }
+                }
+            }
+            ,
+            {
+                "type": "sphere",
+                "pos": {
+                    "x": 0.0,
+                    "y": -99.0,
+                    "z": 0.0
+                },
+                "radius": 100.0,
+                "material": {
+                    "type": "metal",
+                    "fuzz": 0.0,
+                    "albedo": 0.6,
+                    "color": {
+                        "r": 0.4,
+                        "g": 0.8,
+                        "b": 0.1
+                    }
+                }
+            }
+            ]
